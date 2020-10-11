@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Shops</h2>
+<ul>
+  {% for shop in shop_list %}
+    <li><a href="{{ url_for('show_shop', shopname=shop.name) }}">{{ shop.name }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}
