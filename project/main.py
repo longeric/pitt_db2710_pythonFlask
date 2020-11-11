@@ -37,7 +37,7 @@ def api_game_show(gameid):
 
 def get_game_list():
     games = db.Game.select(db.Game.id, db.Game.name, db.Game.type, db.Game.release_date, db.Game.platform,
-                           db.Game.image,
+                           db.Game.image, db.Game.price,
                            db.Game.hard_copy)
     return list(games.dicts())
 
