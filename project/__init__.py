@@ -49,12 +49,13 @@ def create_app():
         return render_template('404.html'), 404
 
 
-    # blueprint for auth routes in our app
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
-    # blueprint for non-auth parts of app
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .cart import cart as cart_blueprint
+    app.register_blueprint(cart_blueprint)
 
     return app

@@ -41,15 +41,24 @@ class Customer(Model):
     addr_street = CharField(default='')
     addr_zipcode = CharField(default='')
 
-    # todo: default payment info
-    # card type
-    # card number
-    # expire at
-    # card holder's name
-    # billing addr
+    card_type = CharField(default='')
+    card_number = CharField(default='')
+    card_expire_at = DateField(default='2020-01-01')
+    card_holder_name = CharField(default='')
+    billing_addr_country = CharField(default='')
+    billing_addr_state = CharField(default='')
+    billing_addr_city = CharField(default='')
+    billing_addr_street = CharField(default='')
+    billing_addr_zipcode = CharField(default='')
 
     class Meta:
         database = database
+
+
+# class Cart(Model):
+#     customer = ForeignKeyField(Customer)
+#     game = ForeignKeyField(Game)
+#     number = IntegerField()
 
 
 class Supplier(Model):
