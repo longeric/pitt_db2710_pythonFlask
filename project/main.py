@@ -23,8 +23,7 @@ def profile():
 
 @main.route('/api/game/list', methods=['GET'])
 def api_game_list():
-    games = db.Game.select(db.Game.id, db.Game.name, db.Game.type, db.Game.release_date, db.Game.platform, db.Game.image, db.Game.hard_copy)
-    return json.dumps(list(games.dicts()), default=str)
+    return render_template("gameList.html", gameList=get_game_list(), gameDict=get_game_dict())
 
 
 @main.route('/api/game/show/<gameid>', methods=['GET'])
@@ -36,4 +35,15 @@ def api_game_show(gameid):
         abort(404)
 
 
+def get_game_list():
+    games = db.Game.select(db.Game.id, db.Game.name, db.Game.type, db.Game.release_date, db.Game.platform,
+                           db.Game.image,
+                           db.Game.hard_copy)
+    return list(games.dicts())
 
+
+def get_game_dict():
+    games = db.Game.select(db.Game.id, db.Game.name, db.Game.type, db.Game.release_date, db.Game.platform,
+                           db.Game.image,
+                           db.Game.hard_copy)
+    return games.dicts()
