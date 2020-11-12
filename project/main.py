@@ -23,16 +23,10 @@ def profile():
 
 @main.route('/game/list', methods=['GET'])
 def game_list_page():
-    user = {}
-    if current_user and not current_user.is_anonymous and current_user.is_authenticated:
-        user['name'] = current_user.name
-        user['email'] = current_user.email
-        user['role'] = current_user.role
     games = db.Game.select(db.Game.id, db.Game.name, db.Game.type, db.Game.release_date, db.Game.platform,
                            db.Game.image, db.Game.price,
                            db.Game.hard_copy)
-    print(user)
-    return render_template("gameList.html", gameList=list(games), user=user)
+    return render_template("gameList.html", gameList=list(games))
 
 
 @main.route('/game/show/<gameid>', methods=['GET'])
