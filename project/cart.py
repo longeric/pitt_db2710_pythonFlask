@@ -19,6 +19,12 @@ cart = Blueprint('cart', __name__)
 # }));
 
 
+@cart.route('/cart', methods=['GET'])
+def cart_page():
+    if 'cart' not in session:
+        session['cart'] = {}
+    return "todo: add cart page <br/> " + json.dumps(session['cart'])
+
 @cart.route('/api/cart/set', methods=['POST'])
 def set():
     form = request.form
