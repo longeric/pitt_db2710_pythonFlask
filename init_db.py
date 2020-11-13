@@ -63,6 +63,10 @@ with open('good_games.json', 'r', encoding='utf8') as f:
         duplicate.add(key)
         db.Game.create(**obj)
 
+        if len(duplicate) > 10:
+            print("Only add 10 for test!!!!!")
+            break
+
 
 accounts = [
     {'email': 'lei@admin.com', 'name': '',

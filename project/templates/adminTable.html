@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+  table {
+      table-layout: auto;
+      border-collapse: collapse;
+      width: 100%;
+  }
+  table td {
+      border: 1px solid #ccc;
+  }
+  table .absorbing-column {
+      width: 100%;
+  }
+</style>
+
+<a href='add'><button>New</button></a>
+
+<table>
+  <tr>
+    {% for h in headers %}
+    <th> {{ h }} </th>
+    {% endfor %}
+  </tr>
+
+  {% for row in content %}
+  <tr>
+    {% for h in headers %}
+    <td> {{ row[h] }} </td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+
+</table>
+
+{% endblock %}

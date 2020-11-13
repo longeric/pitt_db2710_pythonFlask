@@ -14,18 +14,20 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
+    next_url = request.form.get("next")
 
     try:
         user = db.Account.get(db.Account.email == email)
         
-        # check if user actually exists
-        # take the user supplied password, hash it, and compare it to the hashed password in database
         if not check_password_hash(user.password, password): 
             flash('Please check your login details and try again.')
-            return redirect(url_for('auth.login')) # if user doesn't exist or password is wrong, reload the page
+            return redirect(url_for('auth.login'))
 
-        # if the above check passes, then we know the user has the right credentials
-        login_user(user, remember=remember)
+        if not login_user(user, remember=remember):
+            flash('Please check your login details and try again.')
+            return redirect(url_for('auth.login'))
+        if next_url:
+            return redirect(next_url)
         return redirect(url_for('main.profile'))
     except db.DoesNotExist:
         flash('Please check your login details and try again.')

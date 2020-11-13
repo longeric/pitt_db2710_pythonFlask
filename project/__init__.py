@@ -1,15 +1,16 @@
+from functools import wraps
 from flask import Flask, g, render_template, current_app
 from flask_login import LoginManager, current_user
 from . import models as db
 
 
-def role_required(role):
+def role_required(roles):
     def wrapper(func):
         @wraps(func)
         def decorated_view(*args, **kwargs):
             if not current_user.is_authenticated:
                 return current_app.login_manager.unauthorized()
-            elif current_user.role != role:
+            elif current_user.role not in roles:
                 return current_app.login_manager.unauthorized()
             return func(*args, **kwargs)
         return decorated_view
@@ -20,6 +21,7 @@ def create_app():
     app = Flask(__name__)
 
     app.config['SECRET_KEY'] = '_5c#yf2L"F4Q8z\n\xec]kdlshfieo12'
+    app.config['UPLOAD_FOLDER'] = app.root_path + '/../uploads'
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -57,5 +59,8 @@ def create_app():
 
     from .cart import cart as cart_blueprint
     app.register_blueprint(cart_blueprint)
+
+    from .admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint)
 
     return app

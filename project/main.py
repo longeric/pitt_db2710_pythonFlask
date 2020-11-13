@@ -1,18 +1,26 @@
 import datetime
 import json
-import peewee
-from flask_login import login_required, current_user
-from playhouse import shortcuts
-from . import models as db
 
-from flask import Blueprint, request, g, render_template, redirect, url_for, flash, abort, jsonify
+import peewee
+from flask import (Blueprint, abort, current_app, flash, g, jsonify, redirect,
+                   render_template, request, send_from_directory, url_for)
+from flask_login import current_user, login_required
+from playhouse import shortcuts
+
+from . import models as db
 
 main = Blueprint('main', __name__)
 
 
 @main.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    return redirect(url_for('main.game_list_page'))
+    # return render_template('index.html')
+
+
+@main.route('/images/<path:filename>')
+def image_files(filename):
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 
 
 @main.route('/profile', methods=['GET'])
@@ -36,4 +44,3 @@ def game_page(gameid):
         return "TODO: This is game detail page"
     except peewee.DoesNotExist as e:
         abort(404)
-

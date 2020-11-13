@@ -25,6 +25,7 @@ def cart_page():
         session['cart'] = {}
     return "todo: add cart page <br/> " + json.dumps(session['cart'])
 
+
 @cart.route('/api/cart/set', methods=['POST'])
 def set():
     form = request.form
