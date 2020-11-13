@@ -15,6 +15,7 @@ pip install -r requirements.txt
 ## MySQL
 
 - modify `project/models.py` to connect to your database.
+- run `init_db.py` to fill databse.
 
 ## How to run
 
