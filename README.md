@@ -40,3 +40,23 @@ flask run
 ## APIs
 - [Flask](https://flask.palletsprojects.com/en/1.1.x/quickstart/)
 - [peewee](http://docs.peewee-orm.com/en/latest/peewee/quickstart.html)
+
+## TODO:
+- admin: game remove x
+- show name/hello on headers
+- home (shop list)
+    - image size!
+    - order by (default by platform)
+    - add to cart; show cart numbers
+    - search bar (frontend? backend?)
+- cart / checkout
+    - add/remove/clear
+    - checkout
+    - fill address
+    - payments
+- profile: my orders (history)
+    - order list
+    - order status / track
+    - ? comments ?
+    - reset password
+

@@ -31,6 +31,7 @@ def profile():
 
 @main.route('/game/list', methods=['GET'])
 def game_list_page():
+    # orderby = request.args.get('orderby')
     games = db.Game.select(db.Game.id, db.Game.name, db.Game.type, db.Game.release_date, db.Game.platform,
                            db.Game.image, db.Game.price,
                            db.Game.hard_copy)
