@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script type="text/javascript">
+  var game_list = {{games | tojson}};
+  console.log(game_list);
+</script>
+
 <div class="shop-items">
     <div class="container-fluid">
         <div class="row">
