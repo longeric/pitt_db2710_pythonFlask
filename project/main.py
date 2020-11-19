@@ -35,10 +35,22 @@ def profile():
 
 @main.route('/game/list', methods=['GET'])
 def game_list_page():
+    sortby = request.args.get('sortby', '')
+    search = request.args.get('search', '')
+    print(search)
     games = db.Game.select(db.Game.id, db.Game.name, db.Game.type, db.Game.release_date, db.Game.platform,
                            db.Game.image, db.Game.price,
-                           db.Game.hard_copy)
-
+                           db.Game.hard_copy).order_by(db.Game.platform.desc())
+    if search != '':
+        games = games.where(db.Game.name.contains(search))
+    if sortby == '':
+        pass
+    elif sortby == 'Price':
+        games = games.order_by(db.Game.price.desc())
+    elif sortby == 'Platform':
+        games = games.order_by(db.Game.platform.desc())
+    elif sortby == 'release_date':
+        games = games.order_by(db.Game.release_date.desc())
     return render_template("gameList.html", gameList=list(games), games=modellist2dict(games))
 
 

@@ -5,14 +5,42 @@
   var game_list = {{games | tojson}};
   console.log(game_list);
 </script>
-
+<div class="container">
+    <div class="row">
+        <div class="dropdown col-lg-4">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="sortByButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                  >
+            Sort By
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="sortByButton">
+            <a class="dropdown-item" href="{{url_for('main.game_list_page', sortby='Price')}}">Price</a>
+            <a class="dropdown-item" href="{{url_for('main.game_list_page', sortby='Platform')}}">Platform</a>
+            <a class="dropdown-item" href="{{url_for('main.game_list_page', sortby='release_date')}}">Release Date</a>
+          </ul>
+        </div>
+        <div class="col-lg-4 offset-4">
+            <form action="" method="GET">
+                <input type="text" name="search">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+    </div>
+</div>
+<!--<div class="show-items">-->
+<!--    <div class="container-fluid">-->
+<!--        <div value="game_list.hard_copy">game_list.hard_copy</div>-->
+<!--    </div>-->
+<!--</div>-->
+<br>
 <div class="shop-items">
     <div class="container-fluid">
         <div class="row">
             {% for g in gameList %}
-            <div class="col-md-3 col-sm-6">
+            <div class="col-md-4 col-sm-6">
                 <div class="card" style="width: 18rem;">
-                  <img src="{{g.image if g.image.startswith('http') else url_for('main.image_files', filename=g.image)}}" class="card-img-top" alt="...">
+                  <img src="{{g.image if g.image.startswith('http') else url_for('main.image_files', filename=g.image)}}"
+                       class="card-img-top" height="200" width="100">
                   <div class="card-body">
                     <h5 class="card-title">{{ g.name }}</h5>
                       <h6 class="card-subtitle mb-2 text-muted">{{ g.type }}</h6>
@@ -23,15 +51,9 @@
                      onclick="addToCart()">Add to cart</a>
                   </div>
                 </div>
-
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
-<script>
-function addToCart(){
-    alert("You have added this item to shopping cart");
-}
-</script>
 {% endblock %}
