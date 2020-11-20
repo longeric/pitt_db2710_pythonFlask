@@ -30,7 +30,42 @@ def image_files(filename):
 @main.route('/profile', methods=['GET'])
 @login_required
 def profile():
-    return 'todo: profile or setting page'
+    customer = db.Customer.select().where(db.Customer.account == current_user.email)
+    customer_id = list(customer.dicts())[0].get('id')
+    page = request.args.get('page')
+    detail = request.args.get('detail', '')
+    if page == 'order':
+        order_status = db.OrderStatus.select(db.Order.datetime, db.Order.game.alias('game'),
+                                             db.OrderStatus.status, db.Order.id, db.OrderStatus.note,
+                                             db.Order.addr_name, db.Order.addr_country, db.Order.addr_state,
+                                             db.Order.addr_city, db.Order.addr_street, db.Order.addr_zipcode) \
+            .join(db.Order, on=(db.Order.datetime == db.OrderStatus.datetime)) \
+            .where(db.Order.customer == customer_id).alias('order_status')
+
+        if detail == '':
+            customer_order = db.Game.select(order_status.c.datetime,
+                                            peewee.fn.Count(order_status.c.id).alias('quantity'),
+                                            peewee.fn.Sum(db.Game.price).alias("amount"), order_status.c.status) \
+                .join(order_status, on=(order_status.c.game == db.Game.id)) \
+                .group_by(order_status.c.datetime).order_by(order_status.c.datetime.desc())
+
+            return render_template("order.html", orderList=list(customer_order.dicts()), info='Order')
+        else:
+            customer_order_detail = db.Game.select(order_status.c.datetime, order_status.c.note,
+                                                   order_status.c.addr_name, order_status.c.addr_country,
+                                                   order_status.c.addr_state, order_status.c.addr_city,
+                                                   order_status.c.addr_street, order_status.c.addr_zipcode,
+                                                   peewee.fn.Count(order_status.c.game).alias('quantity'),
+                                                   order_status.c.status, peewee.fn.Sum(db.Game.price).alias('price'),
+                                                   db.Game.name) \
+                .join(order_status, on=(order_status.c.game == db.Game.id)) \
+                .where(order_status.c.datetime == detail) \
+                .group_by(order_status.c.game)
+            return render_template("order.html", orderDetailList=list(customer_order_detail.dicts()),
+                                   info='Order Detail')
+    else:
+        return render_template("profile.html", c=list(customer.dicts())[0])
+
 
 
 @main.route('/game/list', methods=['GET'])

@@ -22,6 +22,7 @@ pip install -r requirements.txt
 ### Win
 ```
 set FLASK_APP=project
+set FLASK_ENV=development
 flask run
 ```
 
@@ -60,3 +61,16 @@ flask run
     - ? comments ?
     - reset password
 
+## test(qsl):
+   -customer
+    UPDATE `infsci`.`customer` SET `first_name` = 'y', `last_name` = 't', `phone` = '412888888', `addr_country` = 'US', `addr_state` = 'PA', `addr_city` = 'Pittsburgh', `addr_street` = 'fifth Ave', `addr_zipcode` = '15123', `card_type` = 'VISA', `card_number` = '412342370197810', `card_holder_name` = 'yt', `billing_addr_country` = 'US', `billing_addr_state` = 'PA', `billing_addr_city` = 'Pittsburgh', `billing_addr_street` = 'fifth Ave', `billing_addr_zipcode` = '15123' WHERE (`id` = '1');
+    
+   -order
+    INSERT INTO `infsci`.`order` (`id`, `game_id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('1', '1', '1', '2020-11-20', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
+    INSERT INTO `infsci`.`order` (`id`, `game_id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('2', '2', '1', '2020-11-20', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
+    INSERT INTO `infsci`.`order` (`id`, `game_id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('3', '1', '1', '2020-11-20', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
+    INSERT INTO `infsci`.`order` (`id`, `game_id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('4', '3', '1', '2020-11-15', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
+
+   -order status
+    INSERT INTO `infsci`.`orderstatus` (`id`, `order_id`, `status`, `note`, `datetime`) VALUES ('1', '1', 'deliveryed', 'none', '2020-11-20 00:00:00');
+    INSERT INTO `infsci`.`orderstatus` (`id`, `order_id`, `status`, `note`, `datetime`) VALUES ('2', '4', 'ready to delevery', 'text contact when deliveryed', '2020-11-15 00:00:00');
