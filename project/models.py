@@ -2,8 +2,8 @@ from flask_login import UserMixin
 from peewee import *
 
 # your db here
-database = MySQLDatabase('infsci', user='root',
-                         password='12345.6', host='127.0.0.1', port=3306)
+database = MySQLDatabase('infsci', user='lei',
+                         password='123', host='127.0.0.1', port=3306)
 
 class Game(Model):
     name = CharField()
@@ -87,7 +87,6 @@ class Supply(Model):
 
 
 class Order(Model):
-    game = ForeignKeyField(Game)
     customer = ForeignKeyField(Customer)
     datetime = DateTimeField()
 
@@ -97,6 +96,14 @@ class Order(Model):
     addr_city = CharField()
     addr_street = CharField()
     addr_zipcode = CharField()
+
+    class Meta:
+        database = database
+
+
+class OrderContains(Model):
+    order = ForeignKeyField(Order)
+    game = ForeignKeyField(Game)
 
     class Meta:
         database = database
