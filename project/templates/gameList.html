@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<script type="text/javascript">
-  var game_list = {{games | tojson}};
-  console.log(game_list);
-</script>
 
 <div class="shop-items">
     <div class="container-fluid">
@@ -20,7 +16,7 @@
                       <h6 class="card-subtitle mb-2 text-muted">{{ g.release_date }}</h6>
                       <p class="card-text">${{ g.price }}</p>
                     <a href="#" class="add-to-cart btn btn-outline-secondary btn-sm"
-                     onclick="addToCart()">Add to cart</a>
+                     onclick="addToCart({{ g.id }})">Add to cart</a>
                   </div>
                 </div>
 
@@ -30,8 +26,13 @@
     </div>
 </div>
 <script>
-function addToCart(){
-    alert("You have added this item to shopping cart");
+function addToCart(game_id){
+  $.post("{{ url_for('cart.add') }}", {
+    game: game_id,
+    number: 1
+  }).done(function() {
+    refreshCart();
+  });
 }
 </script>
 {% endblock %}

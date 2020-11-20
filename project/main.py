@@ -18,8 +18,8 @@ def modellist2dict(l):
 
 @main.route('/', methods=['GET'])
 def index():
-    return redirect(url_for('main.game_list_page'))
     # return render_template('index.html')
+    return redirect(url_for('main.game_list_page'))
 
 
 @main.route('/images/<path:filename>')
