@@ -90,6 +90,7 @@
     
       .shopping-cart .shopping-cart-items {
         padding-top: 20px;
+        list-style-type: none;
       }
     
       .shopping-cart .shopping-cart-items li {
@@ -161,4 +162,13 @@
 
       .hero-body {
         z-index: 0;
+      }
+
+      .cart-img-container {
+        height: 100px;
+        width: 70px;
+        float: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
