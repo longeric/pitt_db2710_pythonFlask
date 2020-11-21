@@ -10,6 +10,7 @@ from flask import Blueprint, request, g, render_template, redirect, url_for, fla
 
 cart = Blueprint('cart', __name__)
 
+
 def get_game_info(id, number):
     try:
         game = db.Game.get_by_id(id)
@@ -35,16 +36,57 @@ def get_game_info(id, number):
 def checkout():
     customer = db.Customer.get(db.Customer.account == current_user)
 
-    data = [get_game_info(id, number) for id, number in session['cart'].items()]
-    data = [item for item in data if item['name'] != "N/A"]
+    cart_data = [get_game_info(id, number)
+                 for id, number in session['cart'].items()]
+    cart_data = [item for item in cart_data if item['name'] != "N/A"]
     if request.method == 'POST':
-        pass
+        customer.first_name = request.form['first_name']
+        customer.last_name = request.form['last_name']
+        customer.addr_country = request.form['addr_country']
+        customer.addr_street = request.form['addr_street']
+        customer.addr_city = request.form['addr_city']
+        customer.addr_state = request.form['addr_state']
+        customer.addr_zipcode = request.form['addr_zipcode']
+        customer.phone = request.form['phone']
+        customer.card_holder_name = request.form['card_holder_name']
+        customer.card_number = request.form['card_number']
+        customer.card_expire_at = request.form['card_expire_at']
+        customer.card_cvv = request.form['cvv']
+        customer.save()
+
+        order = db.Order.create(
+            customer=customer,
+            first_name=request.form['first_name'],
+            last_name=request.form['last_name'],
+            addr_country=request.form['addr_country'],
+            addr_street=request.form['addr_street'],
+            addr_city=request.form['addr_city'],
+            addr_state=request.form['addr_state'],
+            addr_zipcode=request.form['addr_zipcode'],
+            phone=request.form['phone'],
+            card_holder_name=request.form['card_holder_name'],
+            card_number=request.form['card_number'],
+            card_expire_at=request.form['card_expire_at'],
+            card_cvv=request.form['cvv']
+        )
+
+        order_status = db.OrderStatus.create(order=order, status="created", note="", datetime=datetime.datetime.now())
+
+        for item in cart_data:
+            db.OrderContains.create(
+                order=order,
+                game=item['id'],
+                number=item['number'],
+                per_price=item['price']
+            )
+
+        return redirect(url_for("main.profile", page="order"))
     else:
-        if not data:
+        if not cart_data:
             flash("You don't have any items in your cart. ")
             return redirect(url_for("main.index"))
-        total = sum(item['price']*item['number'] for item in data)
-        return render_template('checkout.html', data=data, total=total, customer=customer)
+        total = sum(item['price']*item['number'] for item in cart_data)
+        return render_template('checkout.html', data=cart_data, total=total, customer=customer)
 
 
 @cart.route('/api/cart/add', methods=['POST'])
@@ -86,12 +128,14 @@ def set():
 
     return 'ok'
 
+
 @cart.route('/api/cart/get', methods=['GET'])
 def get():
     if 'cart' not in session:
         session['cart'] = {}
-    
-    data = [get_game_info(id, number) for id, number in session['cart'].items()]
+
+    data = [get_game_info(id, number)
+            for id, number in session['cart'].items()]
 
     return jsonify(data)
 
@@ -110,4 +154,3 @@ def clear():
     session.modified = True
 
     return jsonify(session['cart'])
-
