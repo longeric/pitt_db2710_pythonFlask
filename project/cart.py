@@ -79,7 +79,8 @@ def checkout():
                 number=item['number'],
                 per_price=item['price']
             )
-
+        session['cart'] = {}
+        session.modified = True
         return redirect(url_for("main.profile", page="order"))
     else:
         if not cart_data:
