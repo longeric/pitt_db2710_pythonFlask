@@ -73,6 +73,15 @@
 </div> <!--end base-container -->
 
 <script type="text/javascript">
+  function change_qty(el, gid) {
+    $.post("{{ url_for('cart.set') }}", {
+      game: gid,
+      number: el.value
+    }).done(function() {
+      refreshCart();
+    });
+  }
+
   function refreshCart() {
     $.get("{{ url_for('cart.get') }}", function (cart) {
       $(".shopping-cart-items").empty();
@@ -86,8 +95,8 @@
         var tml = "<li class='clearfix'> <div class='cart-img-container'>  <img src='" + g.image +
             "' style='max-height: 70px; width: 70px; padding: 2px;' alt='loading' /> </div> <span class='item-name'>" + g.name +
             "</span> <span class='item-price'>$" + g.price +
-            "</span> <span class='item-quantity'>Quantity: "+ g.number +
-            "</span> </li>"
+            "</span> <span class='item-quantity'> Qty <input type='number' value='" + g.number + "' onchange='change_qty(this, " + g.id + ")' " +
+            " min='0' style='width: 35px;'/> </span> </li>"
             total += (g.number * g.price);
         $(".shopping-cart-items").append(tml);
       };
