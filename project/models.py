@@ -1,9 +1,9 @@
 from flask_login import UserMixin
 from peewee import *
 
-# your db here
-database = MySQLDatabase('infsci', user='lei',
-                         password='123', host='127.0.0.1', port=3306)
+# your db hereroot
+database = MySQLDatabase('infsci', user='root',
+                         password='12345.6', host='127.0.0.1', port=3306)
 
 class Game(Model):
     name = CharField()
@@ -134,4 +134,4 @@ class Transaction(Model):
 
 with database:
     database.create_tables(
-        [Game, Customer, Supplier, Supply, Order, OrderStatus, Transaction, Account])
+        [Game, Customer, Supplier, Supply, Order, OrderStatus, OrderContains, Transaction, Account])

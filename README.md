@@ -66,11 +66,25 @@ flask run
     UPDATE `infsci`.`customer` SET `first_name` = 'y', `last_name` = 't', `phone` = '412888888', `addr_country` = 'US', `addr_state` = 'PA', `addr_city` = 'Pittsburgh', `addr_street` = 'fifth Ave', `addr_zipcode` = '15123', `card_type` = 'VISA', `card_number` = '412342370197810', `card_holder_name` = 'yt', `billing_addr_country` = 'US', `billing_addr_state` = 'PA', `billing_addr_city` = 'Pittsburgh', `billing_addr_street` = 'fifth Ave', `billing_addr_zipcode` = '15123' WHERE (`id` = '1');
     
    -order
-    INSERT INTO `infsci`.`order` (`id`, `game_id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('1', '1', '1', '2020-11-20', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
-    INSERT INTO `infsci`.`order` (`id`, `game_id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('2', '2', '1', '2020-11-20', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
-    INSERT INTO `infsci`.`order` (`id`, `game_id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('3', '1', '1', '2020-11-20', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
-    INSERT INTO `infsci`.`order` (`id`, `game_id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('4', '3', '1', '2020-11-15', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
+    INSERT INTO `infsci`.`order` (`id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('1', '1', '2020-11-20', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
+    INSERT INTO `infsci`.`order` (`id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('2', '1', '2020-11-19', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
+    INSERT INTO `infsci`.`order` (`id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('3', '1', '2020-11-21', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
+    INSERT INTO `infsci`.`order` (`id`, `customer_id`, `datetime`, `addr_name`, `addr_country`, `addr_state`, `addr_city`, `addr_street`, `addr_zipcode`) VALUES ('4', '1', '2020-11-15', 'Apt 101', 'US', 'PA', 'Pittsburgh', 'fifth Ave', '15123');
 
    -order status
-    INSERT INTO `infsci`.`orderstatus` (`id`, `order_id`, `status`, `note`, `datetime`) VALUES ('1', '1', 'deliveryed', 'none', '2020-11-20 00:00:00');
-    INSERT INTO `infsci`.`orderstatus` (`id`, `order_id`, `status`, `note`, `datetime`) VALUES ('2', '4', 'ready to delevery', 'text contact when deliveryed', '2020-11-15 00:00:00');
+    INSERT INTO `infsci`.`orderstatus` (`id`, `order_id`, `status`, `note`, `datetime`) VALUES ('1', '1', 'delivered', 'none', '2020-11-20 00:00:00');
+    INSERT INTO `infsci`.`orderstatus` (`id`, `order_id`, `status`, `note`, `datetime`) VALUES ('2', '2', 'delivered', 'none', '2020-11-19 00:00:00');
+    INSERT INTO `infsci`.`orderstatus` (`id`, `order_id`, `status`, `note`, `datetime`) VALUES ('3', '3', 'delivered', 'none', '2020-11-21 00:00:00');
+    INSERT INTO `infsci`.`orderstatus` (`id`, `order_id`, `status`, `note`, `datetime`) VALUES ('4', '4', 'ready to delivery', 'text contact when delivered', '2020-11-15 00:00:00');
+
+   -order contains
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('1', '1', '1');
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('2', '1', '2');
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('3', '1', '1');
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('4', '2', '3');
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('5', '3', '10');
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('6', '4', '11');
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('7', '3', '11');
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('8', '2', '2');
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('9', '2', '11');
+    INSERT INTO `infsci`.`ordercontains` (`id`, `order_id`, `game_id`) VALUES ('10', '1', '5');
