@@ -58,7 +58,7 @@
 <div class="base-container">
   <div class="shopping-cart" style="z-index: 1;">
     <div class="shopping-cart-header">
-      <i class="fa fa-shopping-cart cart-icon"></i><span class="badge">3</span>
+      <i class="fa fa-shopping-cart cart-icon"></i><span id="cart-number-2" class="badge">3</span>
       <div class="shopping-cart-total">
         <span class="lighter-text">Total:</span>
         <span id="cart-total" class="main-color-text">$2,229.97</span>
@@ -108,6 +108,7 @@
       };
       $("#cart-total").text("$" + total);
       $("#cart-number").text(number);
+      $("#cart-number-2").text(number);
       if (rsp['msg'].length > 0) {
         alert(rsp['msg']);
       }
