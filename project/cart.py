@@ -11,6 +11,24 @@ from flask import Blueprint, request, g, render_template, redirect, url_for, fla
 cart = Blueprint('cart', __name__)
 
 
+def valid_cart():
+    if 'cart' not in session:
+        session['cart'] = {}
+    msg = []
+    for id in session['cart']:
+        try:
+            game = db.Game.get_by_id(id)
+            print(game.hard_copy, session['cart'][id])
+            if game.hard_copy < session['cart'][id]:
+                session['cart'][id] = game.hard_copy
+                session.modified = True
+                msg.append((game.name, game.platform, game.hard_copy))
+        except peewee.DoesNotExist:
+            session['cart'][id] = 0
+            session.modified = True
+    return msg
+
+
 def get_game_info(id, number):
     try:
         game = db.Game.get_by_id(id)
@@ -107,9 +125,10 @@ def add():
     if number <= 0:
         del session['cart'][game]
 
+    msg = valid_cart()
     session.modified = True
 
-    return 'ok'
+    return jsonify({'msg': '<br/>'.join(f"{i[0]}|{i[1]} only has {i[2]} in stock." for i in msg)})
 
 
 @cart.route('/api/cart/set', methods=['POST'])
@@ -126,9 +145,10 @@ def set():
     if number <= 0:
         del session['cart'][game]
 
+    msg = valid_cart()
     session.modified = True
 
-    return 'ok'
+    return jsonify({'msg': '<br/>'.join(f"{i[0]}|{i[1]} only has {i[2]} in stock." for i in msg)})
 
 
 @cart.route('/api/cart/get', methods=['GET'])
@@ -136,18 +156,14 @@ def get():
     if 'cart' not in session:
         session['cart'] = {}
 
+    msg = valid_cart()
     data = [get_game_info(id, number)
             for id, number in session['cart'].items()]
 
-    return jsonify(data)
-
-
-@cart.route('/api/cart/simple', methods=['GET'])
-def simple():
-    if 'cart' not in session:
-        session['cart'] = {}
-
-    return jsonify(session['cart'])
+    return jsonify({
+        'data': data,
+        'msg': '<br/>'.join(f"{i[0]}|{i[1]} only has {i[2]} in stock." for i in msg)
+    })
 
 
 @cart.route('/api/cart/clear', methods=['GET'])

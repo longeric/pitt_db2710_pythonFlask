@@ -77,16 +77,20 @@
     $.post("{{ url_for('cart.set') }}", {
       game: gid,
       number: el.value
-    }).done(function() {
+    }).done(function(rsp) {
       refreshCart();
+      if (rsp['msg'].length > 0) {
+        alert(rsp['msg']);
+      }
     });
   }
 
   function refreshCart() {
-    $.get("{{ url_for('cart.get') }}", function (cart) {
+    $.get("{{ url_for('cart.get') }}", function (rsp) {
       $(".shopping-cart-items").empty();
       var total = 0;
       var i;
+      var cart = rsp['data'];
       for (i = 0; i < cart.length; i++) {
         var g = cart[i];
         if (g.name == 'N/A') {
@@ -96,11 +100,15 @@
             "' style='max-height: 70px; width: 70px; padding: 2px;' alt='loading' /> </div> <span class='item-name'>" + g.name +
             "</span> <span class='item-price'>$" + g.price +
             "</span> <span class='item-quantity'> Qty <input type='number' value='" + g.number + "' onchange='change_qty(this, " + g.id + ")' " +
-            " min='0' style='width: 35px;'/> </span> </li>"
+            " min='0' style='width: 45px;'/> </span> </li>"
             total += (g.number * g.price);
         $(".shopping-cart-items").append(tml);
       };
       $("#cart-total").text("$" + total);
+
+      if (rsp['msg'].length > 0) {
+        alert(rsp['msg']);
+      }
     });
   }
 
