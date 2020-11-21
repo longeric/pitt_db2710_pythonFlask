@@ -28,9 +28,9 @@ def rand_game():
 
 with db.database:
     db.database.drop_tables(
-        [db.Game, db.Customer, db.Supplier, db.Supply, db.Order, db.OrderStatus, db.Transaction, db.Account])
+        [db.Game, db.Customer, db.Supplier, db.Supply, db.Order, db.OrderStatus, db.OrderContains, db.Transaction, db.Account])
     db.database.create_tables(
-        [db.Game, db.Customer, db.Supplier, db.Supply, db.Order, db.OrderStatus, db.Transaction, db.Account])
+        [db.Game, db.Customer, db.Supplier, db.Supply, db.Order, db.OrderStatus, db.OrderContains, db.Transaction, db.Account])
 
 db.Game.delete().execute()
 

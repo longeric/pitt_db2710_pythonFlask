@@ -35,19 +35,20 @@ def profile():
     page = request.args.get('page')
     detail = request.args.get('detail', '')
     if page == 'order':
-        order_status = db.OrderStatus.select(db.Order.datetime, db.Order.game.alias('game'),
-                                             db.OrderStatus.status, db.Order.id, db.OrderStatus.note,
+        order_status = db.OrderStatus.select(db.Order.datetime, db.Order.id, db.OrderContains.game.alias('game'),
+                                             db.OrderStatus.status, db.OrderStatus.note,
                                              db.Order.addr_name, db.Order.addr_country, db.Order.addr_state,
                                              db.Order.addr_city, db.Order.addr_street, db.Order.addr_zipcode) \
-            .join(db.Order, on=(db.Order.datetime == db.OrderStatus.datetime)) \
-            .where(db.Order.customer == customer_id).alias('order_status')
+            .join(db.Order) \
+            .join(db.OrderContains) \
+            .where(db.Order.customer == customer_id).alias('order_status').order_by(db.Order.datetime.desc())
 
         if detail == '':
-            customer_order = db.Game.select(order_status.c.datetime,
+            customer_order = db.Game.select(order_status.c.datetime, order_status.c.game,
                                             peewee.fn.Count(order_status.c.id).alias('quantity'),
                                             peewee.fn.Sum(db.Game.price).alias("amount"), order_status.c.status) \
                 .join(order_status, on=(order_status.c.game == db.Game.id)) \
-                .group_by(order_status.c.datetime).order_by(order_status.c.datetime.desc())
+                .group_by(order_status.c.id).order_by(order_status.c.datetime.desc())
 
             return render_template("order.html", orderList=list(customer_order.dicts()), info='Order')
         else:
