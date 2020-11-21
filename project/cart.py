@@ -56,6 +56,7 @@ def checkout():
 
         order = db.Order.create(
             customer=customer,
+            datetime=datetime.datetime.now(),
             first_name=request.form['first_name'],
             last_name=request.form['last_name'],
             addr_country=request.form['addr_country'],
