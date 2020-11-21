@@ -4,19 +4,47 @@ import peewee
 from flask_login import login_required, current_user
 from playhouse import shortcuts
 from . import models as db
+from .import role_required
 
 from flask import Blueprint, request, g, render_template, redirect, url_for, flash, abort, session, jsonify
 
 cart = Blueprint('cart', __name__)
 
-### Sample js post
-# var xhr = new XMLHttpRequest();
-# xhr.open("POST", "api/cart/set", true);
-# xhr.setRequestHeader('Content-Type', 'application/json');
-# xhr.send(JSON.stringify({
-#     game: 3,
-#     number: 0	
-# }));
+def get_game_info(id, number):
+    try:
+        game = db.Game.get_by_id(id)
+        return {
+            "id": id,
+            "name": game.name + ' | ' + game.platform,
+            "price": game.price,
+            "image": game.image if game.image.startswith('http') else url_for('main.image_files', filename=game.image),
+            "number": number
+        }
+    except:
+        return {
+            "id": id,
+            "name": "N/A",
+            "price": "N/A",
+            "image": "#",
+            "number": number
+        }
+
+
+@cart.route('/checkout', methods=['GET', 'POST'])
+@role_required(['customer'])
+def checkout():
+    customer = db.Customer.get(db.Customer.account == current_user)
+
+    data = [get_game_info(id, number) for id, number in session['cart'].items()]
+    data = [item for item in data if item['name'] != "N/A"]
+    if request.method == 'POST':
+        pass
+    else:
+        if not data:
+            flash("You don't have any items in your cart. ")
+            return redirect(url_for("main.index"))
+        total = sum(item['price']*item['number'] for item in data)
+        return render_template('checkout.html', data=data, total=total, customer=customer)
 
 
 @cart.route('/api/cart/add', methods=['POST'])
@@ -60,29 +88,10 @@ def set():
 
 @cart.route('/api/cart/get', methods=['GET'])
 def get():
-    def get_obj(id, number):
-        try:
-            game = db.Game.get_by_id(id)
-            return {
-                "id": id,
-                "name": game.name + ' | ' + game.platform,
-                "price": game.price,
-                "image": game.image if game.image.startswith('http') else url_for('main.image_files', filename=game.image),
-                "number": number
-            }
-        except:
-            return {
-                "id": id,
-                "name": "N/A",
-                "price": "N/A",
-                "image": "#",
-                "number": number
-            }
-
     if 'cart' not in session:
         session['cart'] = {}
     
-    data = [get_obj(id, number) for id, number in session['cart'].items()]
+    data = [get_game_info(id, number) for id, number in session['cart'].items()]
 
     return jsonify(data)
 

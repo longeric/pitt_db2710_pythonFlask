@@ -2,8 +2,8 @@ from flask_login import UserMixin
 from peewee import *
 
 # your db hereroot
-database = MySQLDatabase('infsci', user='root',
-                         password='12345.6', host='127.0.0.1', port=3306)
+database = MySQLDatabase('infsci', user='lei',
+                         password='123', host='127.0.0.1', port=3306)
 
 class Game(Model):
     name = CharField()
@@ -41,24 +41,13 @@ class Customer(Model):
     addr_street = CharField(default='')
     addr_zipcode = CharField(default='')
 
-    card_type = CharField(default='')
     card_number = CharField(default='')
-    card_expire_at = DateField(default='2020-01-01')
+    card_expire_at = CharField(default='')
     card_holder_name = CharField(default='')
-    billing_addr_country = CharField(default='')
-    billing_addr_state = CharField(default='')
-    billing_addr_city = CharField(default='')
-    billing_addr_street = CharField(default='')
-    billing_addr_zipcode = CharField(default='')
+    card_cvv = CharField(default='')
 
     class Meta:
         database = database
-
-
-# class Cart(Model):
-#     customer = ForeignKeyField(Customer)
-#     game = ForeignKeyField(Game)
-#     number = IntegerField()
 
 
 class Supplier(Model):
@@ -90,6 +79,15 @@ class Order(Model):
     customer = ForeignKeyField(Customer)
     datetime = DateTimeField()
 
+    first_name = CharField(default='')
+    last_name = CharField(default='')
+    phone = CharField(default='')
+
+    card_number = CharField(default='')
+    card_expire_at = CharField(default='')
+    card_holder_name = CharField(default='')
+    card_cvv = CharField(default='')
+
     addr_name = CharField()
     addr_country = CharField()
     addr_state = CharField()
@@ -104,6 +102,8 @@ class Order(Model):
 class OrderContains(Model):
     order = ForeignKeyField(Order)
     game = ForeignKeyField(Game)
+    number = IntegerField()
+    per_price = DoubleField(default=0.0)
 
     class Meta:
         database = database
