@@ -23,7 +23,7 @@
     <!--end navbar-left -->
 
     <ul class="navbar-right">
-      <li><a href="#" id="cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge">3</span></a></li>
+      <li><a href="#" id="cart"><i class="fa fa-shopping-cart"></i> Cart <span id="cart-number" class="badge"> 3 </span></a></li>
       {% if not current_user.is_anonymous and current_user.is_authenticated%}
         <li><a href="{{ url_for('main.profile') }}">Profile  </a></li>
         <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
@@ -89,6 +89,7 @@
     $.get("{{ url_for('cart.get') }}", function (rsp) {
       $(".shopping-cart-items").empty();
       var total = 0;
+      var number = 0;
       var i;
       var cart = rsp['data'];
       for (i = 0; i < cart.length; i++) {
@@ -102,10 +103,11 @@
             "</span> <span class='item-quantity'> Qty <input type='number' value='" + g.number + "' onchange='change_qty(this, " + g.id + ")' " +
             " min='0' style='width: 45px;'/> </span> </li>"
             total += (g.number * g.price);
+            number += g.number;
         $(".shopping-cart-items").append(tml);
       };
       $("#cart-total").text("$" + total);
-
+      $("#cart-number").text(number);
       if (rsp['msg'].length > 0) {
         alert(rsp['msg']);
       }
