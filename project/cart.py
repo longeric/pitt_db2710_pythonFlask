@@ -98,6 +98,12 @@ def checkout():
                 number=item['number'],
                 per_price=item['price']
             )
+            try:
+                game = db.Game.get_by_id(item['id'])
+                game.hard_copy = game.hard_copy - item['number']
+                game.save()
+            except peewee.DoesNotExist:
+                pass
         session['cart'] = {}
         session.modified = True
         return redirect(url_for("main.profile", page="order"))
