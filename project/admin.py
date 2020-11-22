@@ -165,3 +165,41 @@ def order_list():
         data.append(item)
 
     return render_template('adminOrder.html', headers=['id', 'email', 'status', 'time', 'pay'], content=data)
+
+
+@admin.route('/admin/order/show/<id>', methods=['GET'])
+@role_required(['admin', 'casher'])
+def order_detail(id):
+    sc = ('created', 'shipped', 'delivered')
+    try:
+        order = db.Order.get_by_id(id)
+        total = sum((contains.per_price * contains.number) for contains in order.order_contains)
+        if order.order_statuses[-1].status == 'delivered':
+            cur = ''
+        else:
+            cur = sc[sc.index(order.order_statuses[-1].status) + 1]
+
+        return render_template('adminOrderDetail.html', order=order, total=total, next_status=cur)
+    except peewee.DoesNotExist:
+        return abort(404)
+
+
+@admin.route('/admin/order/change', methods=['POST'])
+@role_required(['admin', 'casher'])
+def order_change():
+    sc = ('created', 'shipped', 'delivered')
+    status = request.form['status']
+    id = request.form['id']
+
+    if status not in sc:
+        return abort(404)
+    if status == 'shipped':
+        pass
+        # TODO: pay me the money!
+    try:
+        order = db.Order.get_by_id(id)
+        order_status = db.OrderStatus.create(order=order, status=status, note="", datetime=datetime.datetime.now())
+
+        return redirect(url_for("admin.order_detail", id=id))
+    except peewee.DoesNotExist:
+        return abort(404)
