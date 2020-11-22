@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 d-md-block sidebar collapse">
+            <img src="">
+            picture
+        </div>
+        <div class="ml-sm-auto col-lg-6 px-md-4">
+            <div class="dress-card-body">
+                    <h4 class="dress-card-title" style="color:#524913;font-size:32px; font-weight:bold; line-height: 3em; height: 3em; overflow: hidden;">{{ game.name }}</h4>
+                    <p class="dress-card-para" style="font-style:italic; font-size: 22px">{{ game.type }}</p>
+                    <p class="dress-card-para" style="font-weight:bold">{{ game.platform}}</p>
+                    <p class="dress-card-para" style="font-weight:bold">{{ game.release_date}}</p>
+                    <p class="dress-card-para">{{ game.description}}</p>
+                    <br>
+                    <p class="dress-card-para">
+                        <span class="dress-card-price" style="font-weight:bold; font-size:30px">$ {{ game.price }} &ensp;</span>
+                    </p>
+                    <div class="row">
+                        <div class="col-md-10 card-button">
+                            <a href="">
+                                <div class="card-button-inner bag-button">Add to Bag</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+    </div>
+</div>
+<style>
+.card-button a {
+  text-decoration: none;
+}
+.card-button-inner {
+  padding: 10px;
+  border-radius: 3px;
+}
+.bag-button {
+  background: #b8a63e;
+  color: white;
+}
+</style>
+{% endblock %}
