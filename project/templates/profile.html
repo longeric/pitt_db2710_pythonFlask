@@ -26,30 +26,30 @@
 
     <main role="main" class="ml-sm-auto col-lg-10 px-md-4">
         {% block right %}
-            <form>
-                <h6><b>Account information</b></h6>
+            <form method="POST" action="/profile">
+                <br><h6><b>Account information</b></h6>
                 <div class="form-group row">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-2">
                         <input type="text" readonly class="form-control-plaintext" id="staticEmail" value={{ current_user.email }}>
                     </div>
-                    <label for="Phone" class="col-sm-2 col-form-label" style="padding-left: 50px">Phone</label>
+                    <label for="Phone" class="col-sm-2 col-form-label" style="padding-left: 50px" class="required">Phone</label>
                     <div class="col-sm-2">
-                        <input type="phone" class="form-control" id="Name" value={{ c.phone }}>
+                        <input type="phone" class="form-control" class="required" name="phone" value={{ c.phone }}>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="Name" class="col-sm-2 col-form-label">Account Name</label>
+                    <label class="col-sm-2 col-form-label">Account Name</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="Name" value={{ current_user.name }}>
+                        <input type="text" class="form-control" class="required" name="name" value={{ current_user.name }}>
                     </div>
-                    <label for="Name" class="col-sm-2 col-form-label" style="padding-left: 50px">Last Name</label>
+                    <label class="col-sm-2 col-form-label" style="padding-left: 50px">Last Name</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="Name" value={{ c.last_name }}>
+                        <input type="text" class="form-control" class="required" name="last_name" value={{ c.last_name }}>
                     </div>
-                    <label for="Name" class="col-sm-2 col-form-label" style="padding-left: 50px">First Name</label>
+                    <label class="col-sm-2 col-form-label" style="padding-left: 50px">First Name</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="Name" value={{ c.first_name }}>
+                        <input type="text" class="form-control" class="required" name="first_name" value={{ c.first_name }}>
                     </div>
                 </div>
                 <br><br>
@@ -57,71 +57,296 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Card Number</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value={{ c.card_number }}>
+                        <input type="text" class="form-control" class="required" name="card_number" value={{ c.card_number }}>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Card Type</label>
+                    <label class="col-sm-2 col-form-label">Expire Date</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" value={{ c.card_type }}>
+                        <input type="text" class="form-control" class="required" name="card_expire_at" value={{ c.card_expire_at }}>
                     </div>
-                    <label class="col-sm-2 col-form-label" style="padding-left: 50px">Expire Date</label>
+                    <label class="col-sm-2 col-form-label">Holder Name</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" value={{ c.card_expire_at }}>
-                    </div>
-                    <label class="col-sm-2 col-form-label" style="padding-left: 20px">Holder Name</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" value={{ c.card_holder_name }}>
+                        <input type="text" class="form-control" class="required" name="card_holder_name" value={{ c.card_holder_name }}>
                     </div>
                 </div>
                 <br><br>
                 <h6><b>Address information</b></h6><br>
                 <div class="form-group row">
-                    <label class="col-sm-1 col-form-label">Country</label>
-                    <div class="col-sm-1">
-                        <input type="text" class="form-control" value={{ c.addr_country }}>
-                    </div>
-                    <label class="col-sm-1 col-form-label">State</label>
+                    <label class="col-sm-2 col-form-label"><span>Country <span class="required"></span></span></label>
+                    <select name="addr_country" class="col-sm-3">
+                        <option value="">{{ c.addr_country }}</option>
+                        <option value="AFG" {{ "selected" if "AFG" == c.addr_country else "" }}>Afghanistan</option>
+                        <option value="ALA" {{ "selected" if "ALA" == c.addr_country else "" }}>Åland Islands</option>
+                        <option value="ALB" {{ "selected" if "ALB" == c.addr_country else "" }}>Albania</option>
+                        <option value="DZA" {{ "selected" if "DZA" == c.addr_country else "" }}>Algeria</option>
+                        <option value="ASM" {{ "selected" if "ASM" == c.addr_country else "" }}>American Samoa</option>
+                        <option value="AND" {{ "selected" if "AND" == c.addr_country else "" }}>Andorra</option>
+                        <option value="AGO" {{ "selected" if "AGO" == c.addr_country else "" }}>Angola</option>
+                        <option value="AIA" {{ "selected" if "AIA" == c.addr_country else "" }}>Anguilla</option>
+                        <option value="ATA" {{ "selected" if "ATA" == c.addr_country else "" }}>Antarctica</option>
+                        <option value="ATG" {{ "selected" if "ATG" == c.addr_country else "" }}>Antigua and Barbuda</option>
+                        <option value="ARG" {{ "selected" if "ARG" == c.addr_country else "" }}>Argentina</option>
+                        <option value="ARM" {{ "selected" if "ARM" == c.addr_country else "" }}>Armenia</option>
+                        <option value="ABW" {{ "selected" if "ABW" == c.addr_country else "" }}>Aruba</option>
+                        <option value="AUS" {{ "selected" if "AUS" == c.addr_country else "" }}>Australia</option>
+                        <option value="AUT" {{ "selected" if "AUT" == c.addr_country else "" }}>Austria</option>
+                        <option value="AZE" {{ "selected" if "AZE" == c.addr_country else "" }}>Azerbaijan</option>
+                        <option value="BHS" {{ "selected" if "BHS" == c.addr_country else "" }}>Bahamas</option>
+                        <option value="BHR" {{ "selected" if "BHR" == c.addr_country else "" }}>Bahrain</option>
+                        <option value="BGD" {{ "selected" if "BGD" == c.addr_country else "" }}>Bangladesh</option>
+                        <option value="BRB" {{ "selected" if "BRB" == c.addr_country else "" }}>Barbados</option>
+                        <option value="BLR" {{ "selected" if "BLR" == c.addr_country else "" }}>Belarus</option>
+                        <option value="BEL" {{ "selected" if "BEL" == c.addr_country else "" }}>Belgium</option>
+                        <option value="BLZ" {{ "selected" if "BLZ" == c.addr_country else "" }}>Belize</option>
+                        <option value="BEN" {{ "selected" if "BEN" == c.addr_country else "" }}>Benin</option>
+                        <option value="BMU" {{ "selected" if "BMU" == c.addr_country else "" }}>Bermuda</option>
+                        <option value="BTN" {{ "selected" if "BTN" == c.addr_country else "" }}>Bhutan</option>
+                        <option value="BOL" {{ "selected" if "BOL" == c.addr_country else "" }}>Bolivia, Plurinational State of</option>
+                        <option value="BES" {{ "selected" if "BES" == c.addr_country else "" }}>Bonaire, Sint Eustatius and Saba</option>
+                        <option value="BIH" {{ "selected" if "BIH" == c.addr_country else "" }}>Bosnia and Herzegovina</option>
+                        <option value="BWA" {{ "selected" if "BWA" == c.addr_country else "" }}>Botswana</option>
+                        <option value="BVT" {{ "selected" if "BVT" == c.addr_country else "" }}>Bouvet Island</option>
+                        <option value="BRA" {{ "selected" if "BRA" == c.addr_country else "" }}>Brazil</option>
+                        <option value="IOT" {{ "selected" if "IOT" == c.addr_country else "" }}>British Indian Ocean Territory</option>
+                        <option value="BRN" {{ "selected" if "BRN" == c.addr_country else "" }}>Brunei Darussalam</option>
+                        <option value="BGR" {{ "selected" if "BGR" == c.addr_country else "" }}>Bulgaria</option>
+                        <option value="BFA" {{ "selected" if "BFA" == c.addr_country else "" }}>Burkina Faso</option>
+                        <option value="BDI" {{ "selected" if "BDI" == c.addr_country else "" }}>Burundi</option>
+                        <option value="KHM" {{ "selected" if "KHM" == c.addr_country else "" }}>Cambodia</option>
+                        <option value="CMR" {{ "selected" if "CMR" == c.addr_country else "" }}>Cameroon</option>
+                        <option value="CAN" {{ "selected" if "CAN" == c.addr_country else "" }}>Canada</option>
+                        <option value="CPV" {{ "selected" if "CPV" == c.addr_country else "" }}>Cape Verde</option>
+                        <option value="CYM" {{ "selected" if "CYM" == c.addr_country else "" }}>Cayman Islands</option>
+                        <option value="CAF" {{ "selected" if "CAF" == c.addr_country else "" }}>Central African Republic</option>
+                        <option value="TCD" {{ "selected" if "TCD" == c.addr_country else "" }}>Chad</option>
+                        <option value="CHL" {{ "selected" if "CHL" == c.addr_country else "" }}>Chile</option>
+                        <option value="CHN" {{ "selected" if "CHN" == c.addr_country else "" }}>China</option>
+                        <option value="CXR" {{ "selected" if "CXR" == c.addr_country else "" }}>Christmas Island</option>
+                        <option value="CCK" {{ "selected" if "CCK" == c.addr_country else "" }}>Cocos (Keeling) Islands</option>
+                        <option value="COL" {{ "selected" if "COL" == c.addr_country else "" }}>Colombia</option>
+                        <option value="COM" {{ "selected" if "COM" == c.addr_country else "" }}>Comoros</option>
+                        <option value="COG" {{ "selected" if "COG" == c.addr_country else "" }}>Congo</option>
+                        <option value="COD" {{ "selected" if "COD" == c.addr_country else "" }}>Congo, the Democratic Republic of the</option>
+                        <option value="COK" {{ "selected" if "COK" == c.addr_country else "" }}>Cook Islands</option>
+                        <option value="CRI" {{ "selected" if "CRI" == c.addr_country else "" }}>Costa Rica</option>
+                        <option value="CIV" {{ "selected" if "CIV" == c.addr_country else "" }}>Côte d'Ivoire</option>
+                        <option value="HRV" {{ "selected" if "HRV" == c.addr_country else "" }}>Croatia</option>
+                        <option value="CUB" {{ "selected" if "CUB" == c.addr_country else "" }}>Cuba</option>
+                        <option value="CUW" {{ "selected" if "CUW" == c.addr_country else "" }}>Curaçao</option>
+                        <option value="CYP" {{ "selected" if "CYP" == c.addr_country else "" }}>Cyprus</option>
+                        <option value="CZE" {{ "selected" if "CZE" == c.addr_country else "" }}>Czech Republic</option>
+                        <option value="DNK" {{ "selected" if "DNK" == c.addr_country else "" }}>Denmark</option>
+                        <option value="DJI" {{ "selected" if "DJI" == c.addr_country else "" }}>Djibouti</option>
+                        <option value="DMA" {{ "selected" if "DMA" == c.addr_country else "" }}>Dominica</option>
+                        <option value="DOM" {{ "selected" if "DOM" == c.addr_country else "" }}>Dominican Republic</option>
+                        <option value="ECU" {{ "selected" if "ECU" == c.addr_country else "" }}>Ecuador</option>
+                        <option value="EGY" {{ "selected" if "EGY" == c.addr_country else "" }}>Egypt</option>
+                        <option value="SLV" {{ "selected" if "SLV" == c.addr_country else "" }}>El Salvador</option>
+                        <option value="GNQ" {{ "selected" if "GNQ" == c.addr_country else "" }}>Equatorial Guinea</option>
+                        <option value="ERI" {{ "selected" if "ERI" == c.addr_country else "" }}>Eritrea</option>
+                        <option value="EST" {{ "selected" if "EST" == c.addr_country else "" }}>Estonia</option>
+                        <option value="ETH" {{ "selected" if "ETH" == c.addr_country else "" }}>Ethiopia</option>
+                        <option value="FLK" {{ "selected" if "FLK" == c.addr_country else "" }}>Falkland Islands (Malvinas)</option>
+                        <option value="FRO" {{ "selected" if "FRO" == c.addr_country else "" }}>Faroe Islands</option>
+                        <option value="FJI" {{ "selected" if "FJI" == c.addr_country else "" }}>Fiji</option>
+                        <option value="FIN" {{ "selected" if "FIN" == c.addr_country else "" }}>Finland</option>
+                        <option value="FRA" {{ "selected" if "FRA" == c.addr_country else "" }}>France</option>
+                        <option value="GUF" {{ "selected" if "GUF" == c.addr_country else "" }}>French Guiana</option>
+                        <option value="PYF" {{ "selected" if "PYF" == c.addr_country else "" }}>French Polynesia</option>
+                        <option value="ATF" {{ "selected" if "ATF" == c.addr_country else "" }}>French Southern Territories</option>
+                        <option value="GAB" {{ "selected" if "GAB" == c.addr_country else "" }}>Gabon</option>
+                        <option value="GMB" {{ "selected" if "GMB" == c.addr_country else "" }}>Gambia</option>
+                        <option value="GEO" {{ "selected" if "GEO" == c.addr_country else "" }}>Georgia</option>
+                        <option value="DEU" {{ "selected" if "DEU" == c.addr_country else "" }}>Germany</option>
+                        <option value="GHA" {{ "selected" if "GHA" == c.addr_country else "" }}>Ghana</option>
+                        <option value="GIB" {{ "selected" if "GIB" == c.addr_country else "" }}>Gibraltar</option>
+                        <option value="GRC" {{ "selected" if "GRC" == c.addr_country else "" }}>Greece</option>
+                        <option value="GRL" {{ "selected" if "GRL" == c.addr_country else "" }}>Greenland</option>
+                        <option value="GRD" {{ "selected" if "GRD" == c.addr_country else "" }}>Grenada</option>
+                        <option value="GLP" {{ "selected" if "GLP" == c.addr_country else "" }}>Guadeloupe</option>
+                        <option value="GUM" {{ "selected" if "GUM" == c.addr_country else "" }}>Guam</option>
+                        <option value="GTM" {{ "selected" if "GTM" == c.addr_country else "" }}>Guatemala</option>
+                        <option value="GGY" {{ "selected" if "GGY" == c.addr_country else "" }}>Guernsey</option>
+                        <option value="GIN" {{ "selected" if "GIN" == c.addr_country else "" }}>Guinea</option>
+                        <option value="GNB" {{ "selected" if "GNB" == c.addr_country else "" }}>Guinea-Bissau</option>
+                        <option value="GUY" {{ "selected" if "GUY" == c.addr_country else "" }}>Guyana</option>
+                        <option value="HTI" {{ "selected" if "HTI" == c.addr_country else "" }}>Haiti</option>
+                        <option value="HMD" {{ "selected" if "HMD" == c.addr_country else "" }}>Heard Island and McDonald Islands</option>
+                        <option value="VAT" {{ "selected" if "VAT" == c.addr_country else "" }}>Holy See (Vatican City State)</option>
+                        <option value="HND" {{ "selected" if "HND" == c.addr_country else "" }}>Honduras</option>
+                        <option value="HKG" {{ "selected" if "HKG" == c.addr_country else "" }}>Hong Kong</option>
+                        <option value="HUN" {{ "selected" if "HUN" == c.addr_country else "" }}>Hungary</option>
+                        <option value="ISL" {{ "selected" if "ISL" == c.addr_country else "" }}>Iceland</option>
+                        <option value="IND" {{ "selected" if "IND" == c.addr_country else "" }}>India</option>
+                        <option value="IDN" {{ "selected" if "IDN" == c.addr_country else "" }}>Indonesia</option>
+                        <option value="IRN" {{ "selected" if "IRN" == c.addr_country else "" }}>Iran, Islamic Republic of</option>
+                        <option value="IRQ" {{ "selected" if "IRQ" == c.addr_country else "" }}>Iraq</option>
+                        <option value="IRL" {{ "selected" if "IRL" == c.addr_country else "" }}>Ireland</option>
+                        <option value="IMN" {{ "selected" if "IMN" == c.addr_country else "" }}>Isle of Man</option>
+                        <option value="ISR" {{ "selected" if "ISR" == c.addr_country else "" }}>Israel</option>
+                        <option value="ITA" {{ "selected" if "ITA" == c.addr_country else "" }}>Italy</option>
+                        <option value="JAM" {{ "selected" if "JAM" == c.addr_country else "" }}>Jamaica</option>
+                        <option value="JPN" {{ "selected" if "JPN" == c.addr_country else "" }}>Japan</option>
+                        <option value="JEY" {{ "selected" if "JEY" == c.addr_country else "" }}>Jersey</option>
+                        <option value="JOR" {{ "selected" if "JOR" == c.addr_country else "" }}>Jordan</option>
+                        <option value="KAZ" {{ "selected" if "KAZ" == c.addr_country else "" }}>Kazakhstan</option>
+                        <option value="KEN" {{ "selected" if "KEN" == c.addr_country else "" }}>Kenya</option>
+                        <option value="KIR" {{ "selected" if "KIR" == c.addr_country else "" }}>Kiribati</option>
+                        <option value="PRK" {{ "selected" if "PRK" == c.addr_country else "" }}>Korea, Democratic People's Republic of</option>
+                        <option value="KOR" {{ "selected" if "KOR" == c.addr_country else "" }}>Korea, Republic of</option>
+                        <option value="KWT" {{ "selected" if "KWT" == c.addr_country else "" }}>Kuwait</option>
+                        <option value="KGZ" {{ "selected" if "KGZ" == c.addr_country else "" }}>Kyrgyzstan</option>
+                        <option value="LAO" {{ "selected" if "LAO" == c.addr_country else "" }}>Lao People's Democratic Republic</option>
+                        <option value="LVA" {{ "selected" if "LVA" == c.addr_country else "" }}>Latvia</option>
+                        <option value="LBN" {{ "selected" if "LBN" == c.addr_country else "" }}>Lebanon</option>
+                        <option value="LSO" {{ "selected" if "LSO" == c.addr_country else "" }}>Lesotho</option>
+                        <option value="LBR" {{ "selected" if "LBR" == c.addr_country else "" }}>Liberia</option>
+                        <option value="LBY" {{ "selected" if "LBY" == c.addr_country else "" }}>Libya</option>
+                        <option value="LIE" {{ "selected" if "LIE" == c.addr_country else "" }}>Liechtenstein</option>
+                        <option value="LTU" {{ "selected" if "LTU" == c.addr_country else "" }}>Lithuania</option>
+                        <option value="LUX" {{ "selected" if "LUX" == c.addr_country else "" }}>Luxembourg</option>
+                        <option value="MAC" {{ "selected" if "MAC" == c.addr_country else "" }}>Macao</option>
+                        <option value="MKD" {{ "selected" if "MKD" == c.addr_country else "" }}>Macedonia, the former Yugoslav Republic of</option>
+                        <option value="MDG" {{ "selected" if "MDG" == c.addr_country else "" }}>Madagascar</option>
+                        <option value="MWI" {{ "selected" if "MWI" == c.addr_country else "" }}>Malawi</option>
+                        <option value="MYS" {{ "selected" if "MYS" == c.addr_country else "" }}>Malaysia</option>
+                        <option value="MDV" {{ "selected" if "MDV" == c.addr_country else "" }}>Maldives</option>
+                        <option value="MLI" {{ "selected" if "MLI" == c.addr_country else "" }}>Mali</option>
+                        <option value="MLT" {{ "selected" if "MLT" == c.addr_country else "" }}>Malta</option>
+                        <option value="MHL" {{ "selected" if "MHL" == c.addr_country else "" }}>Marshall Islands</option>
+                        <option value="MTQ" {{ "selected" if "MTQ" == c.addr_country else "" }}>Martinique</option>
+                        <option value="MRT" {{ "selected" if "MRT" == c.addr_country else "" }}>Mauritania</option>
+                        <option value="MUS" {{ "selected" if "MUS" == c.addr_country else "" }}>Mauritius</option>
+                        <option value="MYT" {{ "selected" if "MYT" == c.addr_country else "" }}>Mayotte</option>
+                        <option value="MEX" {{ "selected" if "MEX" == c.addr_country else "" }}>Mexico</option>
+                        <option value="FSM" {{ "selected" if "FSM" == c.addr_country else "" }}>Micronesia, Federated States of</option>
+                        <option value="MDA" {{ "selected" if "MDA" == c.addr_country else "" }}>Moldova, Republic of</option>
+                        <option value="MCO" {{ "selected" if "MCO" == c.addr_country else "" }}>Monaco</option>
+                        <option value="MNG" {{ "selected" if "MNG" == c.addr_country else "" }}>Mongolia</option>
+                        <option value="MNE" {{ "selected" if "MNE" == c.addr_country else "" }}>Montenegro</option>
+                        <option value="MSR" {{ "selected" if "MSR" == c.addr_country else "" }}>Montserrat</option>
+                        <option value="MAR" {{ "selected" if "MAR" == c.addr_country else "" }}>Morocco</option>
+                        <option value="MOZ" {{ "selected" if "MOZ" == c.addr_country else "" }}>Mozambique</option>
+                        <option value="MMR" {{ "selected" if "MMR" == c.addr_country else "" }}>Myanmar</option>
+                        <option value="NAM" {{ "selected" if "NAM" == c.addr_country else "" }}>Namibia</option>
+                        <option value="NRU" {{ "selected" if "NRU" == c.addr_country else "" }}>Nauru</option>
+                        <option value="NPL" {{ "selected" if "NPL" == c.addr_country else "" }}>Nepal</option>
+                        <option value="NLD" {{ "selected" if "NLD" == c.addr_country else "" }}>Netherlands</option>
+                        <option value="NCL" {{ "selected" if "NCL" == c.addr_country else "" }}>New Caledonia</option>
+                        <option value="NZL" {{ "selected" if "NZL" == c.addr_country else "" }}>New Zealand</option>
+                        <option value="NIC" {{ "selected" if "NIC" == c.addr_country else "" }}>Nicaragua</option>
+                        <option value="NER" {{ "selected" if "NER" == c.addr_country else "" }}>Niger</option>
+                        <option value="NGA" {{ "selected" if "NGA" == c.addr_country else "" }}>Nigeria</option>
+                        <option value="NIU" {{ "selected" if "NIU" == c.addr_country else "" }}>Niue</option>
+                        <option value="NFK" {{ "selected" if "NFK" == c.addr_country else "" }}>Norfolk Island</option>
+                        <option value="MNP" {{ "selected" if "MNP" == c.addr_country else "" }}>Northern Mariana Islands</option>
+                        <option value="NOR" {{ "selected" if "NOR" == c.addr_country else "" }}>Norway</option>
+                        <option value="OMN" {{ "selected" if "OMN" == c.addr_country else "" }}>Oman</option>
+                        <option value="PAK" {{ "selected" if "PAK" == c.addr_country else "" }}>Pakistan</option>
+                        <option value="PLW" {{ "selected" if "PLW" == c.addr_country else "" }}>Palau</option>
+                        <option value="PSE" {{ "selected" if "PSE" == c.addr_country else "" }}>Palestinian Territory, Occupied</option>
+                        <option value="PAN" {{ "selected" if "PAN" == c.addr_country else "" }}>Panama</option>
+                        <option value="PNG" {{ "selected" if "PNG" == c.addr_country else "" }}>Papua New Guinea</option>
+                        <option value="PRY" {{ "selected" if "PRY" == c.addr_country else "" }}>Paraguay</option>
+                        <option value="PER" {{ "selected" if "PER" == c.addr_country else "" }}>Peru</option>
+                        <option value="PHL" {{ "selected" if "PHL" == c.addr_country else "" }}>Philippines</option>
+                        <option value="PCN" {{ "selected" if "PCN" == c.addr_country else "" }}>Pitcairn</option>
+                        <option value="POL" {{ "selected" if "POL" == c.addr_country else "" }}>Poland</option>
+                        <option value="PRT" {{ "selected" if "PRT" == c.addr_country else "" }}>Portugal</option>
+                        <option value="PRI" {{ "selected" if "PRI" == c.addr_country else "" }}>Puerto Rico</option>
+                        <option value="QAT" {{ "selected" if "QAT" == c.addr_country else "" }}>Qatar</option>
+                        <option value="REU" {{ "selected" if "REU" == c.addr_country else "" }}>Réunion</option>
+                        <option value="ROU" {{ "selected" if "ROU" == c.addr_country else "" }}>Romania</option>
+                        <option value="RUS" {{ "selected" if "RUS" == c.addr_country else "" }}>Russian Federation</option>
+                        <option value="RWA" {{ "selected" if "RWA" == c.addr_country else "" }}>Rwanda</option>
+                        <option value="BLM" {{ "selected" if "BLM" == c.addr_country else "" }}>Saint Barthélemy</option>
+                        <option value="SHN" {{ "selected" if "SHN" == c.addr_country else "" }}>Saint Helena, Ascension and Tristan da Cunha</option>
+                        <option value="KNA" {{ "selected" if "KNA" == c.addr_country else "" }}>Saint Kitts and Nevis</option>
+                        <option value="LCA" {{ "selected" if "LCA" == c.addr_country else "" }}>Saint Lucia</option>
+                        <option value="MAF" {{ "selected" if "MAF" == c.addr_country else "" }}>Saint Martin (French part)</option>
+                        <option value="SPM" {{ "selected" if "SPM" == c.addr_country else "" }}>Saint Pierre and Miquelon</option>
+                        <option value="VCT" {{ "selected" if "VCT" == c.addr_country else "" }}>Saint Vincent and the Grenadines</option>
+                        <option value="WSM" {{ "selected" if "WSM" == c.addr_country else "" }}>Samoa</option>
+                        <option value="SMR" {{ "selected" if "SMR" == c.addr_country else "" }}>San Marino</option>
+                        <option value="STP" {{ "selected" if "STP" == c.addr_country else "" }}>Sao Tome and Principe</option>
+                        <option value="SAU" {{ "selected" if "SAU" == c.addr_country else "" }}>Saudi Arabia</option>
+                        <option value="SEN" {{ "selected" if "SEN" == c.addr_country else "" }}>Senegal</option>
+                        <option value="SRB" {{ "selected" if "SRB" == c.addr_country else "" }}>Serbia</option>
+                        <option value="SYC" {{ "selected" if "SYC" == c.addr_country else "" }}>Seychelles</option>
+                        <option value="SLE" {{ "selected" if "SLE" == c.addr_country else "" }}>Sierra Leone</option>
+                        <option value="SGP" {{ "selected" if "SGP" == c.addr_country else "" }}>Singapore</option>
+                        <option value="SXM" {{ "selected" if "SXM" == c.addr_country else "" }}>Sint Maarten (Dutch part)</option>
+                        <option value="SVK" {{ "selected" if "SVK" == c.addr_country else "" }}>Slovakia</option>
+                        <option value="SVN" {{ "selected" if "SVN" == c.addr_country else "" }}>Slovenia</option>
+                        <option value="SLB" {{ "selected" if "SLB" == c.addr_country else "" }}>Solomon Islands</option>
+                        <option value="SOM" {{ "selected" if "SOM" == c.addr_country else "" }}>Somalia</option>
+                        <option value="ZAF" {{ "selected" if "ZAF" == c.addr_country else "" }}>South Africa</option>
+                        <option value="SGS" {{ "selected" if "SGS" == c.addr_country else "" }}>South Georgia and the South Sandwich Islands</option>
+                        <option value="SSD" {{ "selected" if "SSD" == c.addr_country else "" }}>South Sudan</option>
+                        <option value="ESP" {{ "selected" if "ESP" == c.addr_country else "" }}>Spain</option>
+                        <option value="LKA" {{ "selected" if "LKA" == c.addr_country else "" }}>Sri Lanka</option>
+                        <option value="SDN" {{ "selected" if "SDN" == c.addr_country else "" }}>Sudan</option>
+                        <option value="SUR" {{ "selected" if "SUR" == c.addr_country else "" }}>Suriname</option>
+                        <option value="SJM" {{ "selected" if "SJM" == c.addr_country else "" }}>Svalbard and Jan Mayen</option>
+                        <option value="SWZ" {{ "selected" if "SWZ" == c.addr_country else "" }}>Swaziland</option>
+                        <option value="SWE" {{ "selected" if "SWE" == c.addr_country else "" }}>Sweden</option>
+                        <option value="CHE" {{ "selected" if "CHE" == c.addr_country else "" }}>Switzerland</option>
+                        <option value="SYR" {{ "selected" if "SYR" == c.addr_country else "" }}>Syrian Arab Republic</option>
+                        <option value="TWN" {{ "selected" if "TWN" == c.addr_country else "" }}>Taiwan, Province of China</option>
+                        <option value="TJK" {{ "selected" if "TJK" == c.addr_country else "" }}>Tajikistan</option>
+                        <option value="TZA" {{ "selected" if "TZA" == c.addr_country else "" }}>Tanzania, United Republic of</option>
+                        <option value="THA" {{ "selected" if "THA" == c.addr_country else "" }}>Thailand</option>
+                        <option value="TLS" {{ "selected" if "TLS" == c.addr_country else "" }}>Timor-Leste</option>
+                        <option value="TGO" {{ "selected" if "TGO" == c.addr_country else "" }}>Togo</option>
+                        <option value="TKL" {{ "selected" if "TKL" == c.addr_country else "" }}>Tokelau</option>
+                        <option value="TON" {{ "selected" if "TON" == c.addr_country else "" }}>Tonga</option>
+                        <option value="TTO" {{ "selected" if "TTO" == c.addr_country else "" }}>Trinidad and Tobago</option>
+                        <option value="TUN" {{ "selected" if "TUN" == c.addr_country else "" }}>Tunisia</option>
+                        <option value="TUR" {{ "selected" if "TUR" == c.addr_country else "" }}>Turkey</option>
+                        <option value="TKM" {{ "selected" if "TKM" == c.addr_country else "" }}>Turkmenistan</option>
+                        <option value="TCA" {{ "selected" if "TCA" == c.addr_country else "" }}>Turks and Caicos Islands</option>
+                        <option value="TUV" {{ "selected" if "TUV" == c.addr_country else "" }}>Tuvalu</option>
+                        <option value="UGA" {{ "selected" if "UGA" == c.addr_country else "" }}>Uganda</option>
+                        <option value="UKR" {{ "selected" if "UKR" == c.addr_country else "" }}>Ukraine</option>
+                        <option value="ARE" {{ "selected" if "ARE" == c.addr_country else "" }}>United Arab Emirates</option>
+                        <option value="GBR" {{ "selected" if "GBR" == c.addr_country else "" }}>United Kingdom</option>
+                        <option value="USA" {{ "selected" if "USA" == c.addr_country else "" }}>United States</option>
+                        <option value="UMI" {{ "selected" if "UMI" == c.addr_country else "" }}>United States Minor Outlying Islands</option>
+                        <option value="URY" {{ "selected" if "URY" == c.addr_country else "" }}>Uruguay</option>
+                        <option value="UZB" {{ "selected" if "UZB" == c.addr_country else "" }}>Uzbekistan</option>
+                        <option value="VUT" {{ "selected" if "VUT" == c.addr_country else "" }}>Vanuatu</option>
+                        <option value="VEN" {{ "selected" if "VEN" == c.addr_country else "" }}>Venezuela, Bolivarian Republic of</option>
+                        <option value="VNM" {{ "selected" if "VNM" == c.addr_country else "" }}>Viet Nam</option>
+                        <option value="VGB" {{ "selected" if "VGB" == c.addr_country else "" }}>Virgin Islands, British</option>
+                        <option value="VIR" {{ "selected" if "VIR" == c.addr_country else "" }}>Virgin Islands, U.S.</option>
+                        <option value="WLF" {{ "selected" if "WLF" == c.addr_country else "" }}>Wallis and Futuna</option>
+                        <option value="ESH" {{ "selected" if "ESH" == c.addr_country else "" }}>Western Sahara</option>
+                        <option value="YEM" {{ "selected" if "YEM" == c.addr_country else "" }}>Yemen</option>
+                        <option value="ZMB" {{ "selected" if "ZMB" == c.addr_country else "" }}>Zambia</option>
+                        <option value="ZWE" {{ "selected" if "ZWE" == c.addr_country else "" }}>Zimbabwe</option>
+                    </select>
+                </label>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">State</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" value={{ c.addr_state }}>
+                        <input type="text" class="form-control" class="required" name="addr_state" value={{ c.addr_state }}>
                     </div>
-                    <label class="col-sm-1 col-form-label">City</label>
+                    <label class="col-sm-2 col-form-label">City</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" value={{ c.addr_city }}>
+                        <input type="text" class="form-control" class="required" name="addr_city" value={{ c.addr_city }}>
                     </div>
                     <label class="col-sm-2 col-form-label" style="padding-left: 50px">ZIP Code</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" value={{ c.addr_zipcode }}>
+                        <input type="text" class="form-control" class="required" name="addr_zipcode" value={{ c.addr_zipcode }}>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Street</label>
                     <input type="text" class="form-control" value={{ c.addr_street }}>
                 </div>
-                <br><br>
-                <h6><b>Billing Address</b></h6><br>
-                <div class="form-group row">
-                    <label class="col-sm-1 col-form-label">Country</label>
-                    <div class="col-sm-1">
-                        <input type="text" class="form-control" value={{ c.billing_addr_country }}>
-                    </div>
-                    <label class="col-sm-1 col-form-label">State</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" value={{ c.billing_addr_state }}>
-                    </div>
-                    <label class="col-sm-1 col-form-label">City</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" value={{ c.billing_addr_city }}>
-                    </div>
-                    <label class="col-sm-2 col-form-label" style="padding-left: 50px">ZIP Code</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" value={{ c.billing_addr_zipcode }}>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="formGroupExampleInput2">Street</label>
-                    <input type="text" class="form-control" id="formGroupExampleInput2" value={{ c.billing_addr_street }}>
-                </div>
+                <button class="button is-block is-info is-large is-fullwidth" type="submit" style="float: right">Submit</button>
             </form>
         {% endblock %}
     </main>

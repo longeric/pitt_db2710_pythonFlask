@@ -7,7 +7,7 @@ from flask import (Blueprint, abort, current_app, flash, g, jsonify, redirect,
 from flask_login import current_user, login_required
 from playhouse import shortcuts
 
-from . import models as db
+from . import models as db, role_required
 
 main = Blueprint('main', __name__)
 
@@ -29,44 +29,72 @@ def image_files(filename):
 
 @main.route('/profile', methods=['GET'])
 @login_required
+@role_required(['customer'])
 def profile():
     customer = db.Customer.select().where(db.Customer.account == current_user.email)
     customer_id = list(customer.dicts())[0].get('id')
     page = request.args.get('page')
     detail = request.args.get('detail', '')
     if page == 'order':
-        order_status = db.OrderStatus.select(db.Order.datetime, db.Order.id, db.OrderContains.game.alias('game'),
-                                             db.OrderStatus.status, db.OrderStatus.note,
-                                             db.Order.addr_name, db.Order.addr_country, db.Order.addr_state,
-                                             db.Order.addr_city, db.Order.addr_street, db.Order.addr_zipcode) \
-            .join(db.Order) \
+        order_info = db.Order.select(db.Order.datetime, db.Order.id.alias('order_id'),
+                                     db.OrderContains.game.alias('game'),
+                                     db.Order.addr_name, db.Order.addr_country, db.Order.addr_state,
+                                     db.Order.addr_city, db.Order.addr_street, db.Order.addr_zipcode,
+                                     db.OrderContains.number, db.OrderContains.per_price) \
             .join(db.OrderContains) \
-            .where(db.Order.customer == customer_id).alias('order_status').order_by(db.Order.datetime.desc())
+            .where(db.Order.customer == customer_id).alias('order_info')
 
         if detail == '':
-            customer_order = db.Game.select(order_status.c.datetime, order_status.c.game,
-                                            peewee.fn.Count(order_status.c.id).alias('quantity'),
-                                            peewee.fn.Sum(db.Game.price).alias("amount"), order_status.c.status) \
-                .join(order_status, on=(order_status.c.game == db.Game.id)) \
-                .group_by(order_status.c.id).order_by(order_status.c.datetime.desc())
+            customer_order = db.Game.select(order_info.c.datetime, order_info.c.game, order_info.c.order_id,
+                                            peewee.fn.Sum(order_info.c.number).alias('quantity'),
+                                            peewee.fn.Sum(order_info.c.number * order_info.c.per_price).alias(
+                                                "amount")) \
+                .join(order_info, on=(order_info.c.game == db.Game.id)) \
+                .group_by(order_info.c.order_id).order_by(order_info.c.datetime.desc())
 
             return render_template("order.html", orderList=list(customer_order.dicts()), info='Order')
         else:
-            customer_order_detail = db.Game.select(order_status.c.datetime, order_status.c.note,
-                                                   order_status.c.addr_name, order_status.c.addr_country,
-                                                   order_status.c.addr_state, order_status.c.addr_city,
-                                                   order_status.c.addr_street, order_status.c.addr_zipcode,
-                                                   peewee.fn.Count(order_status.c.game).alias('quantity'),
-                                                   order_status.c.status, peewee.fn.Sum(db.Game.price).alias('price'),
-                                                   db.Game.name) \
-                .join(order_status, on=(order_status.c.game == db.Game.id)) \
-                .where(order_status.c.datetime == detail) \
-                .group_by(order_status.c.game)
-            return render_template("order.html", orderDetailList=list(customer_order_detail.dicts()),
-                                   info='Order Detail')
+            order_detail = db.Game.select(order_info.c.datetime, db.Game.platform,
+                                          order_info.c.addr_name, order_info.c.addr_country,
+                                          order_info.c.addr_state, order_info.c.addr_city,
+                                          order_info.c.addr_street, order_info.c.addr_zipcode,
+                                          order_info.c.number.alias('quantity'), db.Game.name,
+                                          (order_info.c.number * order_info.c.per_price).alias('price')) \
+                .join(order_info, on=(order_info.c.game == db.Game.id)) \
+                .where(order_info.c.order_id == detail) \
+                .group_by(order_info.c.game).order_by(order_info.c.datetime.asc())
+            order_status = db.Order.select(db.OrderStatus.note, db.OrderStatus.datetime, db.OrderStatus.status) \
+                .join(db.OrderStatus).where(db.Order.id == detail).order_by(db.OrderStatus.datetime.desc())
+            return render_template("order.html", q=request.args.get('q', ''), a=request.args.get('a', ''),
+                                   orderDetailList=list(order_detail.dicts()), info='Order Detail',
+                                   orderStatusList=list(order_status.dicts()))
     else:
         return render_template("profile.html", c=list(customer.dicts())[0])
 
+
+@main.route('/profile', methods=['POST'])
+@login_required
+@role_required(['customer'])
+def profile_post():
+    account = db.Account.get(db.Account.email == current_user)
+    account.name = request.form.get('name')
+    account.save()
+
+    customer = db.Customer.get(db.Customer.account == current_user)
+    customer.phone = request.form.get('phone')
+    customer.first_name = request.form.get('first_name')
+    customer.last_name = request.form.get('last_name')
+    customer.card_number = request.form.get('card_number')
+    customer.card_expire_at = request.form.get('card_expire_at')
+    customer.card_holder_name = request.form.get('card_holder_name')
+    customer.addr_country = request.form.get('addr_country')
+    customer.addr_state = request.form.get('addr_state')
+    customer.addr_city = request.form.get('addr_city')
+    customer.addr_zipcode = request.form.get('addr_zipcode')
+    customer.addr_street = request.form.get('addr_street')
+    customer.save()
+
+    return redirect(url_for('main.profile'))
 
 
 @main.route('/game/list', methods=['GET'])
