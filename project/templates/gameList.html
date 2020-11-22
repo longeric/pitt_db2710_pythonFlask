@@ -35,8 +35,10 @@
         <div class="col-md-3 col-lg-3">
             <div class="dress-card">
                 <div class="dress-card-head">
-                    <img class="dress-card-img-top" src="{{g.image if g.image.startswith('http') else url_for('main.image_files', filename=g.image)}}"
-                     height="100px">
+                    <a href="{{ url_for('main.game_page', gameid=g.id)}}">
+                        <img class="dress-card-img-top" src="{{g.image if g.image.startswith('http') else url_for('main.image_files', filename=g.image)}}"
+                        height="100px">
+                    </a>
                     <div class="suprise-bubble">
 <!--                        <span class="dress-card-heart">-->
 <!--                            <i class="fas fa-heart"></i>-->
