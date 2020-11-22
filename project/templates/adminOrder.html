@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="padding: 5%;">
+<style>
+    table {
+        table-layout: auto;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    table td {
+        border: 1px solid #ccc;
+    }
+
+    table .absorbing-column {
+        width: 100%;
+    }
+</style>
+
+<label>
+    <span> Filter: </span>
+    <input id="filter" type="text">
+</label>
+
+<table id="table">
+    <tr>
+        {% for h in headers %}
+        <th> {{ h }}  </th>
+        {% endfor %}
+    </tr>
+
+    {% for row in content %}
+    <tr class="table-row">
+        {% for h in headers %}
+        <td class="col{{loop.index0+1}}"> {{ row[h] }} </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+
+</table>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#filter').change(function () {
+            $("#table tr.table-row").hide();
+            $("#table td:contains('" + $(this).val() + "')").parent().show();
+            // $("#table td:not(:contains('" + $(this).val() + "'))").parent().hide();
+        });
+    });
+</script>
+
+{% endblock %}

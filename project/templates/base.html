@@ -49,7 +49,7 @@
       <li><a href="{{ url_for('admin.supply_add') }}">New Supply </a></li>
       {% endif %}
       {% if not current_user.is_anonymous and current_user.is_authenticated and current_user.role in ("admin", "casher") %}
-      <li><a href="#"> Order Management </a></li>
+      <li><a href="{{ url_for('admin.order_list') }}"> Order Management </a></li>
       {% endif %}
     </ul>
   </div>

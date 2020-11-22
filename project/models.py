@@ -76,7 +76,7 @@ class Supply(Model):
 
 
 class Order(Model):
-    customer = ForeignKeyField(Customer)
+    customer = ForeignKeyField(Customer, backref='orders')
     datetime = DateTimeField()
 
     first_name = CharField(default='')
@@ -100,7 +100,7 @@ class Order(Model):
 
 
 class OrderContains(Model):
-    order = ForeignKeyField(Order)
+    order = ForeignKeyField(Order, backref='order_contains')
     game = ForeignKeyField(Game)
     number = IntegerField()
     per_price = DoubleField(default=0.0)
@@ -110,7 +110,7 @@ class OrderContains(Model):
 
 
 class OrderStatus(Model):
-    order = ForeignKeyField(Order)
+    order = ForeignKeyField(Order, backref='order_statuses')
     status = CharField()
     note = CharField(1024)
     datetime = DateTimeField()
@@ -120,7 +120,7 @@ class OrderStatus(Model):
 
 
 class Transaction(Model):
-    order = ForeignKeyField(Order)
+    order = ForeignKeyField(Order, backref='transactions')
     type = CharField()  # pay/refund
     amount = IntegerField()
     card_num = CharField()

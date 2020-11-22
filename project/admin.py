@@ -146,3 +146,22 @@ def supply_add():
     else:
         form = SupplyForm()
         return render_template('adminEdit.html', form=form)
+
+
+@admin.route('/admin/order/list', methods=['GET'])
+@role_required(['admin', 'casher'])
+def order_list():
+    data = []
+    for order in db.Order.select():
+        item = {
+            'id': order.id,
+            'email': order.customer.account.email,
+            'status': order.order_statuses[-1].status,
+            'time': order.order_statuses[-1].datetime,
+            'pay': 0
+        }
+        for contains in order.order_contains:
+            item['pay'] += (contains.per_price * contains.number)
+        data.append(item)
+
+    return render_template('adminOrder.html', headers=['id', 'email', 'status', 'time', 'pay'], content=data)
