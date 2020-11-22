@@ -37,25 +37,22 @@ db.Game.delete().execute()
 # for i in range(100):
 #     db.Game.create(**rand_game())
 
-with open('good_games.json', 'r', encoding='utf8') as f:
+with open('good_games_target.json', 'r', encoding='utf8') as f:
     duplicate = set()
     games = json.load(f)
+    random.shuffle(games)
     for game in games:
-        date = datetime.datetime.today()
-        try:
-            date = datetime.datetime.strptime(
-                game['release_date'], '%Y-%m-%dT%H:%M:%SZ').date()
-        except:
-            pass
+        date = datetime.datetime.today() - datetime.timedelta(days=300)
         obj = {
             'name': game['name'],
             'release_date': date,
-            'price': random.randint(20, 500),
-            'type': game['genre'],
+            'price': game['price'],
+            'type': random.choice((('action-adventure game', 'space flight simulation game', 'first-person shooter', 'adventure game', 'combat flight simulator'))),
             'platform': game['platform'],
             'hard_copy': random.randint(300, 1000),
             'image': game['image'],
-            'description': game['desc']
+            'description': game['desc'],
+            'alternate_images': ';'.join(game['alternate_images'])
         }
         key = (obj['name'], obj['platform'], obj['image'])
         if key in duplicate:

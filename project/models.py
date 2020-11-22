@@ -14,6 +14,7 @@ class Game(Model):
     hard_copy = IntegerField()
     image = CharField(max_length=1024)
     description = CharField(max_length=2048)
+    alternate_images = CharField(max_length=2048)
 
     class Meta:
         database = database
