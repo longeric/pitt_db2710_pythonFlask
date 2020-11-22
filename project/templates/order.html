@@ -1,7 +1,8 @@
 
 {% extends "profile.html" %}
 {% block right %}
-    <br><h6><b>{{ info }} information</b></h6><br>
+<div class="container" style="padding: 3%;">
+    <br><h6><b>{{ info }} Information</b></h6><br>
     {% if info == 'Order' %}
         <div class="table-responsive">
             <table class="table table-striped table-sm">
@@ -17,7 +18,7 @@
               {% for order in orderList %}
                 <tr>
                     <td>
-                      <a href="{{ url_for('main.profile', page='order', detail=order.order_id, q=order.quantity, a=order.amount) }}">{{ order.order_id }}</a>
+                      <a href="{{ url_for('main.profile', page='order', detail=order.order_id, q=order.quantity, a=order.amount) }}"><b># {{ order.order_id }}</b></a>
                     </td>
                   <td>{{ order.datetime }}</td>
                   <td>{{ order.quantity }}</td>
@@ -103,4 +104,5 @@
             </table>
         </div>
     {% endif %}
+  </div>
 {% endblock %}
