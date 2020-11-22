@@ -36,8 +36,7 @@
             <div class="dress-card">
                 <div class="dress-card-head">
                     <a href="{{ url_for('main.game_page', gameid=g.id)}}">
-                        <img class="dress-card-img-top" src="{{g.image if g.image.startswith('http') else url_for('main.image_files', filename=g.image)}}"
-                        height="100px">
+                        <img class="dress-card-img-top" src="{{g.image if g.image.startswith('http') else url_for('main.image_files', filename=g.image)}}">
                     </a>
                     <div class="suprise-bubble">
 <!--                        <span class="dress-card-heart">-->
@@ -54,7 +53,7 @@
                     <p class="dress-card-para"><span class="dress-card-price">$ {{ g.price }} &ensp;</span></p>
                     <div class="row">
                         <div class="col-md-10 card-button">
-                            <a href="">
+                            <a href="" onclick="addToCart({{ g.id }})">
                                 <div class="card-button-inner bag-button">Add to Bag</div>
                             </a>
                         </div>

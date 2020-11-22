@@ -34,7 +34,7 @@ def get_game_info(id, number):
         game = db.Game.get_by_id(id)
         return {
             "id": id,
-            "name": game.name + ' | ' + game.platform,
+            "name": game.name,
             "price": game.price,
             "image": game.image if game.image.startswith('http') else url_for('main.image_files', filename=game.image),
             "number": number

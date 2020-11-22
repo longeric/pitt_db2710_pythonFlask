@@ -155,7 +155,7 @@
                 </tr>
                 {% for contains in order.order_contains %}
                 <tr>
-                    <td>{{ contains.game.name + '|' + contains.game.platform }} x {{ contains.number }}</td>
+                    <td>{{ contains.game.name }} x {{ contains.number }}</td>
                     <td>${{ contains.per_price }}</td>
                 </tr>
                 {% endfor %}
