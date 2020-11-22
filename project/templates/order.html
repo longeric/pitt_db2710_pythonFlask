@@ -72,7 +72,9 @@
               <tbody>
               {% for order in orderDetailList %}
                 <tr>
-                    <td>{{ order.name }}</td>
+                    <td>
+                        <a href="{{ url_for('main.game_page', gameid=order.id) }}">{{ order.name }}</a>
+                    </td>
                     <td>{{ order.platform }}</td>
                     <td>{{ order.quantity }}</td>
                     <td>$ {{ order.price }}</td>

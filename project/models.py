@@ -2,8 +2,8 @@ from flask_login import UserMixin
 from peewee import *
 
 # your db hereroot
-database = MySQLDatabase('infsci', user='lei',
-                         password='123', host='127.0.0.1', port=3306)
+database = MySQLDatabase('infsci', user='root',
+                         password='12345.6', host='127.0.0.1', port=3306)
 
 class Game(Model):
     name = CharField()

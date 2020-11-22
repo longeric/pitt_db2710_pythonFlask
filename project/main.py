@@ -54,7 +54,7 @@ def profile():
 
             return render_template("order.html", orderList=list(customer_order.dicts()), info='Order')
         else:
-            order_detail = db.Game.select(order_info.c.datetime, db.Game.platform,
+            order_detail = db.Game.select(order_info.c.datetime, db.Game.platform, db.Game.id,
                                           order_info.c.addr_name, order_info.c.addr_country,
                                           order_info.c.addr_state, order_info.c.addr_city,
                                           order_info.c.addr_street, order_info.c.addr_zipcode,
@@ -122,6 +122,7 @@ def game_list_page():
 def game_page():
     try:
         game_id = request.args.get('gameid')
+        print(game_id)
         game = db.Game.get_by_id(game_id)
         return render_template("gameDetail.html", game=game)
     except peewee.DoesNotExist as e:
