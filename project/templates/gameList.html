@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+    <br>
 <div class="container">
     <div class="row">
-        <div class="dropdown col-lg-4">
+        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="sortByButton"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                   >
@@ -16,49 +16,51 @@
             <a class="dropdown-item" href="{{url_for('main.game_list_page', sortby='release_date')}}">Release Date</a>
           </ul>
         </div>
-        <div class="col-lg-4 offset-4">
-            <form class="form-inline mx-sm-3 mb-2">
-            <div class="form-group mb-2" action="" method="GET">
+        <div class="col col-lg-4 offset-lg-6 col-md-8 col-sm-8 col-xs-4">
+            <form class="form-inline mx-sm-3 mb-2" method="GET">
+<!--            <div class="form-group mb-2" action="" method="GET">-->
                 <input type="text" class="form-control" name="search">
-            </div>
-                <input type="submit" class="btn btn-primary mb-2" value="Search">
+<!--            </div>-->
+<!--            <div class="form-group">-->
+                <input type="submit" class="form-control btn btn-primary" value="Search">
+<!--            </div>-->
             </form>
         </div>
     </div>
 </div>
 <br>
 <div class="shop-items">
-    <div class="container-fluid">
-        <div class="row">
-            {% for g in gameList %}
-            <div class="col-md-4 col-sm-6 col-lg-4">
-                <div class="card">
-                    <div style="width:310px;">
-                        <img src="{{g.image if g.image.startswith('http') else url_for('main.image_files', filename=g.image)}}"
-                        class="card-img-top" height="90px">
+    <div class="row">
+        {% for g in gameList %}
+        <div class="col-md-3 col-lg-3">
+            <div class="dress-card">
+                <div class="dress-card-head">
+                    <img class="dress-card-img-top" src="{{g.image if g.image.startswith('http') else url_for('main.image_files', filename=g.image)}}"
+                     height="100px">
+                    <div class="suprise-bubble">
+<!--                        <span class="dress-card-heart">-->
+<!--                            <i class="fas fa-heart"></i>-->
+<!--                        </span>-->
+<!--                        <a href="#"> <span>More</span></a>-->
                     </div>
-                    <hr>
-                  <div class="card-body">
-                    <div>
-                        <h5 class="card-title" style="color:red; font-weight:bold; line-height: 1.5em; height: 3em; overflow: hidden;">{{ g.name }}</h5>
+                </div>
+                <div class="dress-card-body">
+                    <h4 class="dress-card-title" style="color:red; font-weight:bold; line-height: 1.5em; height: 3em; overflow: hidden;">{{ g.name }}</h4>
+                    <p class="dress-card-para">{{ g.type }} on</p>
+                    <p class="dress-card-para" style="font-weight:bold">{{ g.platform}}</p>
+                    <br>
+                    <p class="dress-card-para"><span class="dress-card-price">$ {{ g.price }} &ensp;</span></p>
+                    <div class="row">
+                        <div class="col-md-10 card-button">
+                            <a href="">
+                                <div class="card-button-inner bag-button">Add to Bag</div>
+                            </a>
+                        </div>
                     </div>
-                      <h6 class="card-subtitle mb-2 text-muted">{{ g.type }}</h6>
-                      <br>
-                      <h6 class="card-subtitle mb-2 text-muted" style="font-weight:bold">{{ g.platform }}</h6>
-
-                      <h6 class="card-subtitle mb-2 text-muted">{{ g.release_date }}</h6>
-                      <p class="card-text">${{ g.price }}</p>
-
-                      <button type="button" class="add-to-cart btn btn-outline-secondary btn-md" onclick="addToCart({{ g.id }})">Add to Cart
-                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-cart" fill="green" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                        </svg>
-                      </button>
-                  </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
 </div>
 <script>
@@ -72,16 +74,73 @@ function addToCart(game_id){
 }
 </script>
 <style>
-.card{
-    width: 20rem;
-    height: 25rem;
-    margin: 1rem;
-    background:transparent;
-    background: linear-gradient(to bottom right, #ffcc99 20%, #99ff66 87%);
-    rgba(50, 125, 168, 0.9);
+.dress-card-img-top {
+  width:100%;
+  border-radius: 7px 7px 0 0;
 }
-.card-body{
-    background: linear-gradient(to bottom right, #99ccff 20%, #ccffff 87%);
+
+.dress-card-body {
+  padding:1rem;
+  background: #fff;
+  border-radius: 0 0 7px 7px;
+}
+
+.dress-card-title {
+  line-height: 0.5rem;
+}
+
+.dress-card-crossed {
+  text-decoration: line-through;
+}
+
+.dress-card-price {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.dress-card-off {
+  color: #E06C9F;
+}
+
+.dress-card-para {
+  margin-bottom: 0.2rem;
+  font-size: 1.0rem;
+  margin-bottom: 0rem;
+}
+
+.dress-card {
+  border-radius: 14px;
+  margin:1em;
+}
+
+.dress-card-heart {
+  font-size: 1em;
+  color: #DB2763;
+  margin: 4.5px;
+  position: absolute;
+  left: 4px;
+  top: 0px;
+}
+.card-button {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 15px;
+  padding: 9px;
+}
+.card-button a {
+  text-decoration: none;
+}
+.card-button-inner {
+  padding: 10px;
+  border-radius: 3px;
+}
+.bag-button {
+  background: #707a8a;
+  color: white;
+}
+
+.bag-button :hover{
+  background: #60469e;
 }
 </style>
 {% endblock %}
