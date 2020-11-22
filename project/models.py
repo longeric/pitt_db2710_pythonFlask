@@ -1,8 +1,15 @@
+import os
 from flask_login import UserMixin
 from peewee import *
 
 # your db hereroot
-database = MySQLDatabase('infsci', user='root',
+if os.path.isfile('db_config.json.bak'):
+    # 'load db from local file.'
+    import json
+    j = json.load(open('db_config.json.bak'))
+    database = MySQLDatabase('infsci', host='127.0.0.1', port=3306, **j)
+else:
+    database = MySQLDatabase('infsci', user='root',
                          password='12345.6', host='127.0.0.1', port=3306)
 
 class Game(Model):
