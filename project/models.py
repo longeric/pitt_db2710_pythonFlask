@@ -38,7 +38,7 @@ class Account(Model, UserMixin):
 
 
 class Customer(Model):
-    account = ForeignKeyField(Account)
+    account = ForeignKeyField(Account, backref='customer')
     first_name = CharField(default='')
     last_name = CharField(default='')
     phone = CharField(default='')

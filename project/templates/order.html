@@ -1,28 +1,40 @@
 
 {% extends "profile.html" %}
 {% block right %}
-<div class="container" style="padding: 3%;">
-    <br><h6><b>{{ info }} Information</b></h6><br>
+<style>
+  h2 {
+        margin: 5px;
+        padding-left: 15px;
+    }
+</style>
+
+<div class="container" style="padding: 5%;">
+    <h2> {{ info }} Information </h2>
     {% if info == 'Order' %}
         <div class="table-responsive">
             <table class="table table-striped table-sm">
                 <thead>
                 <tr>
                   <th>Order ID</th>
-                  <th>Time</th>
-                  <th>Quantity</th>
-                  <th>Amount</th>
+                  <th>Items</th>
+                  <th>Time Created</th>
+                  <th>Current Status</th>
                 </tr>
               </thead>
               <tbody>
               {% for order in orderList %}
                 <tr>
                     <td>
-                      <a href="{{ url_for('main.profile', page='order', detail=order.order_id, q=order.quantity, a=order.amount) }}"><b># {{ order.order_id }}</b></a>
+                      <a href="{{ url_for('main.profile', page='orderDetail', id=order.id) }}"><b># {{ order.id }}</b></a>
+                    </td>
+                    <td>
+                      {% for contains in order.order_contains %}
+                      {% set i = contains.game.image %}
+                      <img src="{{i if i.startswith('http') else url_for('main.image_files', filename=i)}}" style="max-height:45px">
+                      {% endfor %}
                     </td>
                   <td>{{ order.datetime }}</td>
-                  <td>{{ order.quantity }}</td>
-                  <td>$ {{ order.amount }}</td>
+                  <td>{{ order.order_statuses[-1].status }}</td>
                 </tr>
               {% endfor %}
               </tbody>
@@ -31,36 +43,31 @@
     {% endif %}
 
     {% if info == 'Order Detail' %}
-        <form>
         <div class="form-group row">
-            <label  class="col-sm-2 col-form-label" style="padding-left: 50px">Order Time : </label>
+            <label  class="col-sm-2 col-form-label" style="padding-left: 35px">Name : </label>
             <div class="col-sm-2">
-                <input type="text" readonly class="form-control-plaintext" value={{ orderDetailList[0].datetime }}>
+                <input type="text" readonly class="form-control-plaintext" value=" {{ order.first_name + ', ' + order.last_name}}">
             </div>
-            <label class="col-sm-2 col-form-label" style="padding-left: 50px ">Address : </label>
+            <label  class="col-sm-2 col-form-label" style="padding-left: 35px">Phone : </label>
+            <div class="col-sm-2">
+                <input type="text" readonly class="form-control-plaintext" value={{ order.phone }}>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" style="padding-left: 35px ">Address : </label>
             <div class="col-sm-4">
                 <input type="text" readonly class="form-control-plaintext"
-                       value="{{ orderDetailList[0].addr_street }}, {{ orderDetailList[0].addr_city }}, {{ orderDetailList[0].addr_state }} {{ orderDetailList[0].addr_zipcode }}, {{ orderDetailList[0].addr_country }}">
+                       value="{{ order.addr_street }}, {{ order.addr_city }}, {{ order.addr_state }} {{ order.addr_zipcode }}, {{ order.addr_country }}">
             </div>
         </div>
         <div class="form-group row">
-            <label  class="col-sm-2 col-form-label" style="padding-left: 50px">Quantity : </label>
+            <label  class="col-sm-2 col-form-label" style="padding-left: 35px">Order Time: </label>
             <div class="col-sm-2">
-                <input type="text" readonly class="form-control-plaintext" value={{ q }}>
-            </div>
-            <label  class="col-sm-2 col-form-label" style="padding-left: 50px">Amount : </label>
-            <div class="col-sm-2">
-                <input type="text" readonly class="form-control-plaintext" value="$ {{ a }}">
+                <input type="text" readonly class="form-control-plaintext" value={{ order.datetime }}>
             </div>
         </div>
-        <div class="form-group row">
-            <label  class="col-sm-2 col-form-label" style="padding-left: 50px ">Note : </label>
-            <div class="col-sm-2">
-                <input type="text" readonly class="form-control-plaintext" value={{ orderStatusList[0].note }}>
-            </div>
-        </div>
-        </form>
-        <div class="table-responsive">
+        <h5><b>Order Contains</b></h5>
+        <div class="table-responsive" style="padding-left: 9px;">
             <table class="table table-striped table-sm">
                 <thead>
                 <tr>
@@ -71,21 +78,29 @@
                 </tr>
               </thead>
               <tbody>
-              {% for order in orderDetailList %}
+              {% for contain in order.order_contains %}
                 <tr>
                     <td>
-                        <a href="{{ url_for('main.game_page', gameid=order.id) }}">{{ order.name }}</a>
+                        <a href="{{ url_for('main.game_page', gameid=order.id) }}">{{ contain.game.name }}</a>
                     </td>
-                    <td>{{ order.platform }}</td>
-                    <td>{{ order.quantity }}</td>
-                    <td>$ {{ order.price }}</td>
+                    <td>{{ contain.game.platform }}</td>
+                    <td>{{ contain.number }}</td>
+                    <td>$ {{ contain.per_price }}</td>
                 </tr>
               {% endfor %}
+                <tr>
+                  <td>
+                      Total
+                  </td>
+                  <td> - </td>
+                  <td> - </td>
+                  <td> <span style="color: green;"> $ {{ total }} </span></td>
+                </tr>
               </tbody>
             </table>
         </div>
-        <br><h6><b>Order Status</b></h6><br>
-        <div class="table-responsive">
+        <h5><b>Order Status</b></h5>
+        <div class="table-responsive" style="padding-left: 9px;">
             <table class="table table-striped table-sm">
                 <thead>
                 <tr>
@@ -94,7 +109,7 @@
                 </tr>
               </thead>
               <tbody>
-              {% for status in orderStatusList %}
+              {% for status in order.order_statuses %}
                 <tr>
                   <td>{{ status.datetime }}</td>
                   <td>{{ status.status }}</td>

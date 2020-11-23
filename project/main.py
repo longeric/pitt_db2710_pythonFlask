@@ -28,52 +28,21 @@ def image_files(filename):
 
 
 @main.route('/profile', methods=['GET'])
-@login_required
 @role_required(['customer'])
 def profile():
-    customer = db.Customer.select().where(db.Customer.account == current_user.email)
-    customer_id = list(customer.dicts())[0].get('id')
     page = request.args.get('page')
-    detail = request.args.get('detail', '')
-    if page == 'order':
-        order_info = db.Order.select(db.Order.datetime, db.Order.id.alias('order_id'),
-                                     db.OrderContains.game.alias('game'),
-                                     db.Order.addr_name, db.Order.addr_country, db.Order.addr_state,
-                                     db.Order.addr_city, db.Order.addr_street, db.Order.addr_zipcode,
-                                     db.OrderContains.number, db.OrderContains.per_price) \
-            .join(db.OrderContains) \
-            .where(db.Order.customer == customer_id).alias('order_info')
-
-        if detail == '':
-            customer_order = db.Game.select(order_info.c.datetime, order_info.c.game, order_info.c.order_id,
-                                            peewee.fn.Sum(order_info.c.number).alias('quantity'),
-                                            peewee.fn.Sum(order_info.c.number * order_info.c.per_price).alias(
-                                                "amount")) \
-                .join(order_info, on=(order_info.c.game == db.Game.id)) \
-                .group_by(order_info.c.order_id).order_by(order_info.c.datetime.desc())
-
-            return render_template("order.html", orderList=list(customer_order.dicts()), info='Order')
-        else:
-            order_detail = db.Game.select(order_info.c.datetime, db.Game.platform, db.Game.id,
-                                          order_info.c.addr_name, order_info.c.addr_country,
-                                          order_info.c.addr_state, order_info.c.addr_city,
-                                          order_info.c.addr_street, order_info.c.addr_zipcode,
-                                          order_info.c.number.alias('quantity'), db.Game.name,
-                                          (order_info.c.number * order_info.c.per_price).alias('price')) \
-                .join(order_info, on=(order_info.c.game == db.Game.id)) \
-                .where(order_info.c.order_id == detail) \
-                .group_by(order_info.c.game).order_by(order_info.c.datetime.asc())
-            order_status = db.Order.select(db.OrderStatus.note, db.OrderStatus.datetime, db.OrderStatus.status) \
-                .join(db.OrderStatus).where(db.Order.id == detail).order_by(db.OrderStatus.datetime.desc())
-            return render_template("order.html", q=request.args.get('q', ''), a=request.args.get('a', ''),
-                                   orderDetailList=list(order_detail.dicts()), info='Order Detail',
-                                   orderStatusList=list(order_status.dicts()))
+    if page == 'orderList':
+        customer_orders = db.Order.select().where(db.Order.customer == current_user.customer)
+        return render_template("order.html", orderList=customer_orders, info='Order')
+    elif page == 'orderDetail':
+            order = db.Order.get_by_id(request.args.get('id'))
+            total = sum((contain.number*contain.per_price) for contain in order.order_contains)
+            return render_template("order.html", order=order, info='Order Detail', total=total)
     else:
-        return render_template("profile.html", c=list(customer.dicts())[0])
+        return render_template("profile.html", c=db.Order.customer)
 
 
 @main.route('/profile', methods=['POST'])
-@login_required
 @role_required(['customer'])
 def profile_post():
     account = db.Account.get(db.Account.email == current_user)
@@ -118,12 +87,10 @@ def game_list_page():
     return render_template("gameList.html", gameList=list(games), games=modellist2dict(games))
 
 
-@main.route('/game/show', methods=['GET'])
-def game_page():
+@main.route('/game/show/<gameid>', methods=['GET'])
+def game_page(gameid):
     try:
-        game_id = request.args.get('gameid')
-        print(game_id)
-        game = db.Game.get_by_id(game_id)
-        return render_template("gameDetail.html", game=game)
+        game = db.Game.get_by_id(gameid)
+        return "TODO: This is game detail page"
     except peewee.DoesNotExist as e:
         abort(404)
