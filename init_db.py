@@ -60,9 +60,9 @@ with open('good_games_target.json', 'r', encoding='utf8') as f:
         duplicate.add(key)
         db.Game.create(**obj)
 
-        if len(duplicate) > 10:
-            print("Only add 10 for test!!!!!")
-            break
+        # if len(duplicate) > 10:
+        #     print("Only add 10 for test!!!!!")
+        #     break
 
 
 accounts = [
@@ -72,6 +72,72 @@ accounts = [
         'password': generate_password_hash('123', method='sha256'), 'role': 'admin'},
     {'email': 'yi@admin.com', 'name': '',
         'password': generate_password_hash('123', method='sha256'), 'role': 'admin'},
+    {'email': 'lei@supplier.com', 'name': '',
+        'password': generate_password_hash('123', method='sha256'), 'role': 'supplier'},
+    {'email': 'lei@casher.com', 'name': '',
+        'password': generate_password_hash('123', method='sha256'), 'role': 'casher'},
+    {'email': 'tom@123.com', 'name': 'Tom',
+        'password': generate_password_hash('123', method='sha256'), 'role': 'customer'},
+    {'email': 'jerry@123.com', 'name': 'Jerry',
+        'password': generate_password_hash('123', method='sha256'), 'role': 'customer'},
 ]
+
+cus = dict(
+        account = '',
+        first_name = 'TJ',
+        last_name = 'Fakename',
+        phone = '6543217',
+        addr_country = 'USA',
+        addr_state = 'PA',
+        addr_city = 'A',
+        addr_street = '889 Fifth Ave',
+        addr_zipcode = '14326',
+        card_number = '12345609873',
+        card_expire_at = '03/2030',
+        card_holder_name = 'T&J',
+        card_cvv = '123',
+)
+
 for i in accounts:
-    db.Account.create(**i)
+    ac = db.Account.create(**i)
+    if i['role'] == 'customer':
+        cus['account'] = ac
+        db.Customer.create(**cus)
+
+
+
+suppliers = [
+    dict(
+            name = 'supplier 1',
+            email = 'sp1@supplier.org',
+            phone = '1234567',
+            addr_country = 'US',
+            addr_state = 'PA',
+            addr_city = 'Pitt',
+            addr_street = '999 fifth ave',
+            addr_zipcode = 'PA 23431',
+    ),
+    dict(
+            name = 'supplier 2',
+            email = 'sp2@supplier.org',
+            phone = '1734567',
+            addr_country = 'US',
+            addr_state = 'PA',
+            addr_city = 'Pitt',
+            addr_street = '919 fifth ave',
+            addr_zipcode = 'PA 13431',
+    ),
+    dict(
+            name = 'supplier 3',
+            email = 'sp3@supplier.org',
+            phone = '1634567',
+            addr_country = 'US',
+            addr_state = 'PA',
+            addr_city = 'Pitt',
+            addr_street = '995 fifth ave',
+            addr_zipcode = 'PA 23231',
+    )
+]
+for i in suppliers:
+    db.Supplier.create(**i)
+

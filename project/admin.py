@@ -169,6 +169,53 @@ def supply_add():
         return render_template('adminEdit.html', form=form)
 
 
+@admin.route('/admin/trans/history', methods=['GET'])
+@role_required(['admin', 'casher'])
+def trans_history():
+    trans = db.Transaction.select()
+    d = trans.dicts()
+    headers = []
+    if d:
+        for ti, di in zip(trans, d):
+            di['email'] = ti.order.customer.account.email
+        headers = list(d[0].keys())
+    return render_template('adminTrans.html', headers=headers, content=d)
+
+
+@admin.route('/admin/trans/refund', methods=['GET'])
+@role_required(['admin', 'casher'])
+def trans_refund():
+    id = request.args.get('trans')
+    trans = db.Transaction.get_by_id(id)
+    ref = db.Transaction.select().where((db.Transaction.order == trans.order) & (db.Transaction.type == 'refund'))
+    if len(ref) > 0:
+        flash('already refund')
+        return redirect(url_for('admin.trans_history'))
+    d = shortcuts.model_to_dict(trans)
+    del d['id']
+    del d['order']
+    d['order'] = trans.order
+    d['type'] = 'refund'
+    db.Transaction.create(**d)
+    # Refund the customer
+    return redirect(url_for('admin.trans_history'))
+
+
+@admin.route('/admin/sales', methods=['GET'])
+@role_required(['admin', 'casher'])
+def sales_board():
+    by = request.args.get('by', 'sum_qty')
+    r = db.Game.select(
+        db.Game.id, db.Game.name, peewee.fn.AVG(db.Game.price).alias('price_per_item'),
+        peewee.fn.SUM(db.OrderContains.number).alias('sum_qty'),
+        peewee.fn.SUM(db.OrderContains.number * db.OrderContains.per_price).alias('sum_price')
+    ).join(db.OrderContains).group_by(db.Game.id).order_by(peewee.SQL(by).desc()).dicts()
+    headers = []
+    if r:
+        headers = r[0].keys()
+    return render_template('adminSaleBoard.html', headers=headers, content=r)
+
+
 @admin.route('/admin/order/list', methods=['GET'])
 @role_required(['admin', 'casher'])
 def order_list():
@@ -214,12 +261,18 @@ def order_change():
 
     if status not in sc:
         return abort(404)
-    if status == 'shipped':
-        pass
-        # TODO: pay me the money!
     try:
         order = db.Order.get_by_id(id)
         order_status = db.OrderStatus.create(order=order, status=status, note="", datetime=datetime.datetime.now())
+        
+        if status == 'shipped':
+            total = sum((contains.per_price * contains.number) for contains in order.order_contains)
+            db.Transaction.create(
+                order=order, type='pay', amount=total,
+                card_num=order.card_number, card_holder=order.card_holder_name,
+                datetime=datetime.datetime.now(), note=''
+            )
+            # TODO: pay me the money!
 
         return redirect(url_for("admin.order_detail", id=id))
     except peewee.DoesNotExist:

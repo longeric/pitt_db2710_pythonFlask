@@ -115,6 +115,7 @@ class OrderContains(Model):
 
     class Meta:
         database = database
+        primary_key = CompositeKey('order', 'game')
 
 
 class OrderStatus(Model):
@@ -125,12 +126,13 @@ class OrderStatus(Model):
 
     class Meta:
         database = database
+        primary_key = CompositeKey('order', 'status')
 
 
 class Transaction(Model):
     order = ForeignKeyField(Order, backref='transactions')
     type = CharField()  # pay/refund
-    amount = IntegerField()
+    amount = DoubleField()
     card_num = CharField()
     card_holder = CharField()
     datetime = DateTimeField()
