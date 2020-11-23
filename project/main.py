@@ -32,7 +32,7 @@ def image_files(filename):
 def profile():
     page = request.args.get('page')
     if page == 'orderList':
-        customer_orders = db.Order.select().where(db.Order.customer == current_user.customer)
+        customer_orders = db.Order.select().where(db.Order.customer == current_user.customer[0])
         return render_template("order.html", orderList=customer_orders, info='Order')
     elif page == 'orderDetail':
             order = db.Order.get_by_id(request.args.get('id'))
