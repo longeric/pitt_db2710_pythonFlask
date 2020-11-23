@@ -157,6 +157,9 @@ def supply_add():
             form = dict(**(request.form))
             form['date'] = datetime.datetime.today()
             supply = db.Supply.create(**(form))
+            print(type(supply.copies))
+            supply.game.hard_copy += int(supply.copies)
+            supply.game.save()
         except db.IntegrityError:
             flash('DB conflict items')
             return redirect(request.url)

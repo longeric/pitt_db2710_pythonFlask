@@ -19,7 +19,7 @@
         <div class="col col-lg-4 offset-lg-6 col-md-8 col-sm-8 col-xs-4">
             <form class="form-inline mx-sm-3 mb-2" method="GET">
 <!--            <div class="form-group mb-2" action="" method="GET">-->
-                <input type="text" class="form-control" name="search">
+                <input type="text" class="form-control" name="search" value="{{ request.args.get('search', '') }}">
 <!--            </div>-->
 <!--            <div class="form-group">-->
                 <input type="submit" class="form-control btn btn-primary" value="Search">

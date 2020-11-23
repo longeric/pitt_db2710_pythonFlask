@@ -434,19 +434,19 @@
                 </label>
                 <label>
                     <span>Town / City <span class="required">*</span></span>
-                    <input type="text" name="addr_city" value="{{ customer.addr_city }}">
+                    <input type="text" name="addr_city" value="{{ customer.addr_city }}" required>
                 </label>
                 <label>
                     <span>State / County <span class="required">*</span></span>
-                    <input type="text" name="addr_state" value="{{ customer.addr_state }}">
+                    <input type="text" name="addr_state" value="{{ customer.addr_state }}" required>
                 </label>
                 <label>
                     <span>Postcode / ZIP <span class="required">*</span></span>
-                    <input type="text" name="addr_zipcode" value="{{ customer.addr_zipcode }}">
+                    <input type="text" name="addr_zipcode" value="{{ customer.addr_zipcode }}" required>
                 </label>
                 <label>
                     <span>Phone <span class="required">*</span></span>
-                    <input type="tel" name="phone" value="{{ customer.phone }}">
+                    <input type="tel" name="phone" value="{{ customer.phone }}" required>
                 </label>
                 <hr />
 
@@ -456,19 +456,19 @@
                 <label>
                     <span class="fname"> Cardholder Name <span class="required">*</span></span>
                     <input type="text" name="card_holder_name" aria-describedby="nameHelp"
-                        placeholder="Full name as displayed on card." value="{{ customer.card_holder_name }}">
+                        placeholder="Full name as displayed on card." value="{{ customer.card_holder_name }}" required>
                 </label>
                 <label>
                     <span class="fname"> Card Number <span class="required">*</span></span>
-                    <input type="text" name="card_number" placeholder="Card Number" value="{{ customer.card_number }}">
+                    <input type="text" name="card_number" placeholder="Card Number" value="{{ customer.card_number }}" required>
                 </label>
                 <label>
                     <span class="fname"> Expiry Date <span class="required">*</span></span>
-                    <input type="text" name="card_expire_at" placeholder="MM/YYYY" value="{{ customer.card_expire_at }}">
+                    <input type="text" name="card_expire_at" placeholder="MM/YYYY" value="{{ customer.card_expire_at }}" required>
                 </label>
                 <label>
                     <span class="fname"> CVV <span class="required">*</span></span>
-                    <input type="password" name="cvv" placeholder="CVV">
+                    <input type="password" name="cvv" placeholder="CVV" required>
                 </label>
             </div>
             <div class="Yorder">

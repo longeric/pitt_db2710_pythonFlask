@@ -2,17 +2,153 @@
 {% extends "profile.html" %}
 {% block right %}
 <style>
-  h2 {
+
+.container {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    @media (min-width: 1200px) {
+        .container {
+            max-width: 1140px;
+        }
+    }
+
+    .d-flex {
+        display: flex;
+        flex-direction: row;
+        background: #f6f6f6;
+        border-radius: 0 0 5px 5px;
+        padding: 25px;
+    }
+
+    .c-flex {
+        display: flex;
+        flex-direction: column;
+        background: #f6f6f6;
+        border-radius: 0 0 5px 5px;
+        padding: 25px;
+    }
+
+    .form {
+        flex: 4;
+    }
+
+    .Yorder {
+        flex: 2;
+    }
+
+    h2 {
         margin: 5px;
         padding-left: 15px;
+    }
+
+    .required {
+        color: red;
+    }
+
+    label,
+    table {
+        display: block;
+        margin: 15px;
+    }
+
+    label>span {
+        float: left;
+        width: 25%;
+        margin-top: 12px;
+        padding-right: 10px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    select {
+        width: 70%;
+        height: 30px;
+        padding: 5px 10px;
+        margin-bottom: 10px;
+        border: 1px solid #dadada;
+        color: #888;
+    }
+
+    select {
+        width: 72%;
+        height: 45px;
+        padding: 5px 10px;
+        margin-bottom: 10px;
+    }
+
+    .Yorder {
+        margin-top: 15px;
+        height: max-content;
+        padding: 20px;
+        border: 1px solid #dadada;
+    }
+
+    table {
+        margin: 0;
+        padding: 0;
+    }
+
+    th {
+        border-bottom: 1px solid #dadada;
+        padding: 10px 0;
+    }
+
+    tr>td:nth-child(1) {
+        text-align: left;
+        color: #2d2d2a;
+    }
+
+    tr>td:nth-child(2) {
+        text-align: right;
+        color: #52ad9c;
+    }
+
+    td {
+        border-bottom: 1px solid #dadada;
+        padding: 25px 25px 25px 0;
+    }
+
+    p {
+        display: block;
+        color: #888;
+        margin: 0;
+        padding-left: 9px;;;
+    }
+
+    .Yorder>div {
+        padding: 15px 0;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px;
+        border: none;
+        border-radius: 30px;
+        background: #52ad9c;
+        color: #fff;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    button:hover {
+        cursor: pointer;
+        background: #428a7d;
     }
 </style>
 
 <div class="container" style="padding: 5%;">
     <h2> {{ info }} Information </h2>
     {% if info == 'Order' %}
-        <div class="table-responsive">
-            <table class="table table-striped table-sm">
+    <div class="d-flex">
+        <div class="table-responsive Yorder">
+            <table>
                 <thead>
                 <tr>
                   <th>Order ID</th>
@@ -40,35 +176,28 @@
               </tbody>
             </table>
         </div>
+      </div>
     {% endif %}
 
     {% if info == 'Order Detail' %}
+    <div class="c-flex">
         <div class="form-group row">
-            <label  class="col-sm-2 col-form-label" style="padding-left: 35px">Name : </label>
-            <div class="col-sm-2">
-                <input type="text" readonly class="form-control-plaintext" value=" {{ order.first_name + ', ' + order.last_name}}">
-            </div>
-            <label  class="col-sm-2 col-form-label" style="padding-left: 35px">Phone : </label>
-            <div class="col-sm-2">
-                <input type="text" readonly class="form-control-plaintext" value={{ order.phone }}>
-            </div>
+            <label  class="col-sm-2 col-form-label" style="padding-left: 9px;;; font-weight: bold;">Name : </label>
+            <label class="col-sm-2 col-form-label">{{ order.first_name + ', ' + order.last_name}} </label>
+            <label  class="col-sm-2 col-form-label" style="padding-left: 9px;;; font-weight: bold;">Phone : </label>
+            <label class="col-sm-2 col-form-label">{{ order.phone }} </label>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" style="padding-left: 35px ">Address : </label>
-            <div class="col-sm-4">
-                <input type="text" readonly class="form-control-plaintext"
-                       value="{{ order.addr_street }}, {{ order.addr_city }}, {{ order.addr_state }} {{ order.addr_zipcode }}, {{ order.addr_country }}">
-            </div>
+            <label class="col-sm-2 col-form-label" style="padding-left: 9px;;; font-weight: bold; ">Address : </label>
+            <label class="col-sm-4 col-form-label"> {{ order.addr_street }}, {{ order.addr_city }}, {{ order.addr_state }} {{ order.addr_zipcode }}, {{ order.addr_country }} </label>
         </div>
         <div class="form-group row">
-            <label  class="col-sm-2 col-form-label" style="padding-left: 35px">Order Time: </label>
-            <div class="col-sm-2">
-                <input type="text" readonly class="form-control-plaintext" value={{ order.datetime }}>
-            </div>
+            <label  class="col-sm-2 col-form-label" style="padding-left: 9px;;; font-weight: bold;">Order Time: </label>
+            <label class="col-sm-2 col-form-label">{{ order.datetime }} </label>
         </div>
         <h5><b>Order Contains</b></h5>
         <div class="table-responsive" style="padding-left: 9px;">
-            <table class="table table-striped table-sm">
+            <table>
                 <thead>
                 <tr>
                     <th>Game</th>
@@ -99,13 +228,15 @@
               </tbody>
             </table>
         </div>
-        <h5><b>Order Status</b></h5>
+        <br>
+        <h5><b>Order Status <span style="color: green;"> {{ '<'+order.order_statuses[-1].status.upper()+'>' }} </span></b></h5>
         <div class="table-responsive" style="padding-left: 9px;">
-            <table class="table table-striped table-sm">
+            <table>
                 <thead>
                 <tr>
-                  <th>Time</th>
+                  <th>Update at</th>
                   <th>Status</th>
+                  <th>Notes</th>
                 </tr>
               </thead>
               <tbody>
@@ -113,11 +244,13 @@
                 <tr>
                   <td>{{ status.datetime }}</td>
                   <td>{{ status.status }}</td>
+                  <th>{{ status.note }}</th>
                 </tr>
               {% endfor %}
               </tbody>
             </table>
         </div>
+      </div>
     {% endif %}
   </div>
 {% endblock %}

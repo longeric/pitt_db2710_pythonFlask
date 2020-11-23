@@ -15,17 +15,22 @@ def valid_cart():
     if 'cart' not in session:
         session['cart'] = {}
     msg = []
+    tobe_del = []
     for id in session['cart']:
         try:
             game = db.Game.get_by_id(id)
-            print(game.hard_copy, session['cart'][id])
             if game.hard_copy < session['cart'][id]:
                 session['cart'][id] = game.hard_copy
                 session.modified = True
                 msg.append((game.name, game.platform, game.hard_copy))
+                if session['cart'][id] <= 0:
+                    tobe_del.append(id)
         except peewee.DoesNotExist:
-            session['cart'][id] = 0
-            session.modified = True
+            tobe_del.append(id)
+    for i in tobe_del:
+        del session['cart'][i]
+        session.modified = True
+
     return msg
 
 
@@ -106,7 +111,7 @@ def checkout():
                 pass
         session['cart'] = {}
         session.modified = True
-        return redirect(url_for("main.profile", page="order"))
+        return redirect(url_for("main.profile", page="orderDetail", id=order.id))
     else:
         if not cart_data:
             flash("You don't have any items in your cart. ")
