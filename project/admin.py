@@ -42,7 +42,7 @@ class MyForeignKeyConverter(ModelConverter):
         return super().handle_foreign_key(model, field, **kwargs)
 
 
-GameForm = model_form(db.Game, exclude=('release_date', 'image', 'hard_copy'))
+GameForm = model_form(db.Game, exclude=('release_date', 'image', 'hard_copy', 'alternate_images'))
 SupplierForm = model_form(db.Supplier)
 SupplyForm = model_form(db.Supply, exclude=(
     'date',), converter=MyForeignKeyConverter())
@@ -63,36 +63,54 @@ def game_list():
 @role_required(['admin', 'supplier'])
 def game_add():
     if request.method == 'POST':
-        print(request.files)
         file = request.files['file']
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
         ext = get_ext(file.filename)
-        if ext in ALLOWED_EXTENSIONS:
+        if ext not in ALLOWED_EXTENSIONS:
+            flash('File type not allowed')
+            return redirect(request.url)
+        def save_image(file):
             unique_filename = '.'.join((str(uuid.uuid4()), ext))
             file.save(os.path.join(
                 current_app.config['UPLOAD_FOLDER'], unique_filename))
-            try:
-                form = dict(**(request.form))
-                form['image'] = unique_filename
-                form['hard_copy'] = 0
-                game = db.Game.create(**form)
-                return redirect(url_for('admin.game_list'))
-            except db.IntegrityError:
-                flash('DB conflict items')
-                return redirect(request.url)
-        else:
-            flash('File type not allowed')
+            return unique_filename
+        unique_filename = save_image(file)
+        additional_files = []
+        if request.files['file1'].filename != '':
+            additional_files.append(save_image(request.files['file1']))
+        if request.files['file2'].filename != '':
+            additional_files.append(save_image(request.files['file2']))
+        try:
+            form = dict(**(request.form))
+            form['image'] = unique_filename
+            form['hard_copy'] = 0
+            form['alternate_images'] = ';'.join(additional_files)
+            game = db.Game.create(**form)
+            return redirect(url_for('admin.game_list'))
+        except db.IntegrityError:
+            flash('DB conflict items')
             return redirect(request.url)
     else:
         form = GameForm()
         image_label = '<label for="file">Image</label>'
-        image_input = '<input id="file" type="file" name="file" required>'
+        image_input = '<input id="file" type="file" name="file" accept="image/png, image/jpeg, image/jpg" required>'
+        
+        add_image_label = '<label for="file1">Additional Image (optional)</label>'
+        add_image_input = '<input id="file1" type="file" name="file1" accept="image/png, image/jpeg, image/jpg">'
+
+        add_image_label2 = '<label for="file2">Additional Image (optional)</label>'
+        add_image_input2 = '<input id="file2" type="file" name="file2" accept="image/png, image/jpeg, image/jpg">'
 
         date_label = '<label for="date">Release Date</label>'
         date_input = '<input type="date" id="date" name="release_date" required>'
-        return render_template('adminEdit.html', form=form, additional=((date_label, date_input), (image_label, image_input)))
+        return render_template('adminEdit.html', form=form, additional=(
+            (date_label, date_input),
+            (image_label, image_input),
+            (add_image_label, add_image_input),
+            (add_image_label2, add_image_input2)
+        ))
 
 
 @admin.route('/admin/supplier/list', methods=['GET'])

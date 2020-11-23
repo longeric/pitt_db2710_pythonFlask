@@ -127,7 +127,7 @@ $(function() {
                 
                 {% for i in game.alternate_images.split(';') %}
                 <div class="mySlides">
-                    <img src="{{ i }}" style="width:100%">
+                    <img src="{{i if i.startswith('http') else url_for('main.image_files', filename=i)}}" style="width:100%">
                 </div>
                 {% endfor %}
             
