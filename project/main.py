@@ -87,10 +87,12 @@ def game_list_page():
     return render_template("gameList.html", gameList=list(games), games=modellist2dict(games))
 
 
-@main.route('/game/show/<gameid>', methods=['GET'])
-def game_page(gameid):
+@main.route('/game/show', methods=['GET'])
+def game_page():
     try:
-        game = db.Game.get_by_id(gameid)
-        return "TODO: This is game detail page"
+        print(request.args)
+        game_id = request.args.get('gameid')
+        game = db.Game.get_by_id(game_id)	
+        return render_template("gameDetail.html", game=game)
     except peewee.DoesNotExist as e:
-        abort(404)
+        return abort(404)
