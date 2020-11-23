@@ -9,8 +9,8 @@ if os.path.isfile('db_config.json.bak'):
     j = json.load(open('db_config.json.bak'))
     database = MySQLDatabase('infsci', host='127.0.0.1', port=3306, **j)
 else:
-    database = MySQLDatabase('infsci', user='root',
-                         password='12345.6', host='127.0.0.1', port=3306)
+    database = MySQLDatabase('2710Final', user='root',
+                         password='Yl-19890616', host='127.0.0.1', port=3306)
 
 class Game(Model):
     name = CharField()
