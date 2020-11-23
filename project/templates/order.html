@@ -210,7 +210,7 @@
               {% for contain in order.order_contains %}
                 <tr>
                     <td>
-                        <a href="{{ url_for('main.game_page', gameid=order.id) }}">{{ contain.game.name }}</a>
+                        <a href="{{ url_for('main.game_page', gameid=contain.game.id) }}">{{ contain.game.name }}</a>
                     </td>
                     <td>{{ contain.game.platform }}</td>
                     <td>{{ contain.number }}</td>
