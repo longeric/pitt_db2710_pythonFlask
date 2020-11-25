@@ -10,11 +10,11 @@
                         <form id="" class="form-horizontal" role="form" method="POST" action="/login">
                             <div style="margin-bottom: 25px" class="input-group">
                                         <span class="glyphicon glyphicon-user"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-email" type="email" class="form-control" name="email" value="" placeholder="Your email">
+                                        <input id="login-email" type="email" class="form-control" name="email" value="" placeholder="Your email" required>
                             </div>
                             <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                        <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                                        <input id="login-password" type="password" class="form-control" name="password" placeholder="password" required>
                             </div>
                             <div class="input-group">
                                       <div class="checkbox">
@@ -44,29 +44,4 @@
                     </div>
         </div>
     </div>
-<!--<div class="column is-4 is-offset-4">-->
-<!--    <h3 class="title">Login</h3>-->
-<!--    <div class="box">-->
-<!--        <form method="POST" action="/login">-->
-<!--            <div class="field">-->
-<!--                <div class="control">-->
-<!--                    <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="">-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="field">-->
-<!--                <div class="control">-->
-<!--                    <input class="input is-large" type="password" name="password" placeholder="Your Password">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="field">-->
-<!--                <label class="checkbox">-->
-<!--                    <input type="checkbox">-->
-<!--                    Remember me-->
-<!--                </label>-->
-<!--            </div>-->
-<!--            <button class="button is-block is-info is-large is-fullwidth">Login</button>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
 {% endblock %}

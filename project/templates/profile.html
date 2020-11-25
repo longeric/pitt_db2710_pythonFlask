@@ -47,21 +47,21 @@
                     </div>
                     <label for="Phone" class="col-sm-2 col-form-label" style="padding-left: 50px" class="required">Phone</label>
                     <div class="col-sm-2">
-                        <input type="phone" class="form-control" class="required" name="phone" value="{{ current_user.customer[0].phone }}">
+                        <input type="tel" class="form-control" class="required" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" name="phone" value="{{ current_user.customer[0].phone }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Account Name</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" class="required" name="name" value="{{ current_user.name }}">
+                        <input type="text" class="form-control" pattern="[A-Za-z]{2,}" required name="name" value="{{ current_user.name }}">
                     </div>
                     <label class="col-sm-2 col-form-label" style="padding-left: 50px">First Name</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" class="required" name="first_name" value="{{ current_user.customer[0].first_name }}">
+                        <input type="text" class="form-control" pattern="[A-Za-z]{2,}" required name="first_name" value="{{ current_user.customer[0].first_name }}">
                     </div>
                     <label class="col-sm-2 col-form-label" style="padding-left: 50px">Last Name</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" class="required" name="last_name" value="{{ current_user.customer[0].last_name }}">
+                        <input type="text" class="form-control" pattern="[A-Za-z]{2,}" required name="last_name" value="{{ current_user.customer[0].last_name }}">
                     </div>
                 </div>
             </div>
@@ -71,17 +71,17 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Card Number</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" class="required" name="card_number" value="{{ current_user.customer[0].card_number }}">
+                        <input type="tel" class="form-control" pattern="[0-9]{13,16}" required name="card_number" value="{{ current_user.customer[0].card_number }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Expire Date</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" class="required" name="card_expire_at" value="{{ current_user.customer[0].card_expire_at }}">
+                        <input type="tel" class="form-control" pattern="[0-9]{2}/[0-9]{4}" required name="card_expire_at" value="{{ current_user.customer[0].card_expire_at }}"  placeholder="MM/YYYY">
                     </div>
                     <label class="col-sm-2 col-form-label">Holder Name</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" class="required" name="card_holder_name" value="{{ current_user.customer[0].card_holder_name }}">
+                        <input type="text" class="form-control" pattern="[A-Za-z\s]{2,}" required name="card_holder_name" value="{{ current_user.customer[0].card_holder_name }}">
                     </div>
                 </div>
                 </div>
@@ -347,20 +347,20 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">State</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" class="required" name="addr_state" value="{{ current_user.customer[0].addr_state }}">
+                        <input type="text" class="form-control" required name="addr_state" value="{{ current_user.customer[0].addr_state }}">
                     </div>
                     <label class="col-sm-2 col-form-label">City</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" class="required" name="addr_city" value="{{ current_user.customer[0].addr_city }}">
+                        <input type="text" class="form-control" required name="addr_city" value="{{ current_user.customer[0].addr_city }}">
                     </div>
                     <label class="col-sm-2 col-form-label" style="padding-left: 50px">ZIP Code</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" class="required" name="addr_zipcode" value="{{ current_user.customer[0].addr_zipcode }}">
+                        <input type="text" class="form-control" required name="addr_zipcode" value="{{ current_user.customer[0].addr_zipcode }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Street</label>
-                    <input type="text" class="form-control" value="{{ current_user.customer[0].addr_street }}">
+                    <input type="text" class="form-control" value="{{ current_user.customer[0].addr_street }}" required>
                 </div>
                 </div>
                 <button class="button is-block is-info is-large is-fullwidth" type="submit" style="float: right">Submit</button>
