@@ -175,7 +175,7 @@
                 <tr>
                     <th colspan="2">Tracking</th>
                 </tr>
-                {% for status in order.order_statuses %}
+                {% for status in order.order_statuses.order_by(db.OrderStatus.datetime) %}
                 <tr>
                     <td>{{ status.datetime }} </td>
                     <td># {{ status.status }}</td>
@@ -187,7 +187,7 @@
                 </tr>
                 <tr>
                     <td>Current</td>
-                    <td># {{ order.order_statuses[-1].status }}</td>
+                    <td># {{ order.order_statuses.order_by(db.OrderStatus.datetime)[-1].status }}</td>
                 </tr>
             </table>
             <br>
