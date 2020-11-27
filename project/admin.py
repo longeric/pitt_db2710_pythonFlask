@@ -224,8 +224,8 @@ def order_list():
         item = {
             'id': order.id,
             'email': order.customer.account.email,
-            'status': order.order_statuses[-1].status,
-            'time': order.order_statuses[-1].datetime,
+            'status': order.order_statuses.order_by(db.OrderStatus.datetime)[-1].status,
+            'time': order.order_statuses.order_by(db.OrderStatus.datetime)[-1].datetime,
             'pay': 0
         }
         for contains in order.order_contains:
@@ -242,12 +242,12 @@ def order_detail(id):
     try:
         order = db.Order.get_by_id(id)
         total = sum((contains.per_price * contains.number) for contains in order.order_contains)
-        if order.order_statuses[-1].status == 'delivered':
+        if order.order_statuses.order_by(db.OrderStatus.datetime)[-1].status == 'delivered':
             cur = ''
         else:
-            cur = sc[sc.index(order.order_statuses[-1].status) + 1]
+            cur = sc[sc.index(order.order_statuses.order_by(db.OrderStatus.datetime)[-1].status) + 1]
 
-        return render_template('adminOrderDetail.html', order=order, total=total, next_status=cur)
+        return render_template('adminOrderDetail.html', order=order, total=total, next_status=cur, db=db)
     except peewee.DoesNotExist:
         return abort(404)
 
