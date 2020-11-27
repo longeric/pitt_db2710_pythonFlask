@@ -167,15 +167,15 @@
             <div class="form">
                 <label>
                     <span class="fname">First Name <span class="required">*</span></span>
-                    <input type="text" name="first_name" value="{{ customer.first_name }}">
+                    <input type="text" name="first_name" value="{{ customer.first_name }}" required>
                 </label>
                 <label>
                     <span class="lname">Last Name <span class="required">*</span></span>
-                    <input type="text" name="last_name" value="{{ customer.last_name }}">
+                    <input type="text" name="last_name" value="{{ customer.last_name }}" required>
                 </label>
                 <label>
                     <span>Country <span class="required">*</span></span>
-                    <select name="addr_country">
+                    <select name="addr_country" required>
                         <option value="">Select...</option>
                         <option value="AFG" {{ "selected" if "AFG" == customer.addr_country else "" }}>Afghanistan</option>
                         <option value="ALA" {{ "selected" if "ALA" == customer.addr_country else "" }}>Åland Islands</option>
@@ -463,12 +463,12 @@
                     <input type="text" name="card_number" placeholder="Card Number" value="{{ customer.card_number }}" required>
                 </label>
                 <label>
-                    <span class="fname"> Expiry Date <span class="required">*</span></span>
+                    <span class="fname"> Expire Date <span class="required">*</span></span>
                     <input type="text" name="card_expire_at" placeholder="MM/YYYY" value="{{ customer.card_expire_at }}" required>
                 </label>
                 <label>
                     <span class="fname"> CVV <span class="required">*</span></span>
-                    <input type="password" name="cvv" placeholder="CVV" required>
+                    <input type="tel" name="cvv" placeholder="CVV" pattern="[0-9]{3}" required>
                 </label>
             </div>
             <div class="Yorder">
