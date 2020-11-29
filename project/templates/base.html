@@ -37,7 +37,7 @@
   <!--end base-container -->
 </nav>
 {% if not current_user.is_anonymous and current_user.is_authenticated and current_user.role in ("admin", "supplier", "casher") %}
-<nav style="background: #f7d2d2;">
+<nav style="background: white;">
   <div class="base-container">
     <ul class="navbar-left">
       {% if not current_user.is_anonymous and current_user.is_authenticated and current_user.role in ("admin", "supplier") %}
@@ -55,6 +55,7 @@
       <li><a href="{{ url_for('admin.sales_board', by='sum_price') }}"> Sales Board</a></li>
       {% endif %}
     </ul>
+    <br>
   </div>
 </nav>
 {% endif %}
